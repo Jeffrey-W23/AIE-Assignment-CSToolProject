@@ -1,0 +1,15 @@
+c:\users\s171043\documents\visual studio 2015\Projects\CSToolProject\CSToolProject\bin\Debug\CSToolProject.exe.config
+c:\users\s171043\documents\visual studio 2015\Projects\CSToolProject\CSToolProject\obj\Debug\CSToolProject.csprojResolveAssemblyReference.cache
+c:\users\s171043\documents\visual studio 2015\Projects\CSToolProject\CSToolProject\obj\Debug\CSToolProject.Properties.Resources.resources
+c:\users\s171043\documents\visual studio 2015\Projects\CSToolProject\CSToolProject\obj\Debug\CSToolProject.ToolBar.resources
+c:\users\s171043\documents\visual studio 2015\Projects\CSToolProject\CSToolProject\obj\Debug\CSToolProject.csproj.GenerateResource.Cache
+c:\users\s171043\documents\visual studio 2015\Projects\CSToolProject\CSToolProject\bin\Debug\CSToolProject.exe
+c:\users\s171043\documents\visual studio 2015\Projects\CSToolProject\CSToolProject\bin\Debug\CSToolProject.pdb
+c:\users\s171043\documents\visual studio 2015\Projects\CSToolProject\CSToolProject\obj\Debug\CSToolProject.exe
+c:\users\s171043\documents\visual studio 2015\Projects\CSToolProject\CSToolProject\obj\Debug\CSToolProject.pdb
+c:\users\s171043\documents\visual studio 2015\Projects\CSToolProject\CSToolProject\obj\Debug\CSToolProject.Form1.resources
+c:\users\s171043\documents\visual studio 2015\Projects\CSToolProject\CSToolProject\obj\Debug\CSToolProject.LayerBar.resources
+c:\users\s171043\documents\visual studio 2015\Projects\CSToolProject\CSToolProject\obj\Debug\CSToolProject.TextEditDemo.resources
+C:\Users\s171043\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolProject\bin\Debug\CSToolProject.exe.config
+C:\Users\s171043\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolProject\obj\Debug\CSToolProject.exe
+C:\Users\s171043\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolProject\obj\Debug\CSToolProject.pdb
