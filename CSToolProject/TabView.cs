@@ -10,13 +10,16 @@ using System.Windows.Forms;
 
 namespace CSToolProject
 {
-    public partial class TextEditDemo : UserControl
+    public partial class TabView : UserControl
     {
-        public TextEditDemo()
+        public TabView()
         {
             InitializeComponent();
         }
 
-       
+        private void TabView_Resize(object sender, EventArgs e)
+        {
+            Invalidate();
+        }
     }
 }

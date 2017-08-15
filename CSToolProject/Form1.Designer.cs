@@ -30,13 +30,12 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.toolBar1 = new CSToolProject.ToolBar();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -63,18 +62,6 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // editToolStripMenuItem
-            // 
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
-            this.editToolStripMenuItem.Text = "Edit";
-            // 
-            // windowToolStripMenuItem
-            // 
-            this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
-            this.windowToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
-            this.windowToolStripMenuItem.Text = "Window";
-            // 
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
@@ -88,39 +75,46 @@
             this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.openToolStripMenuItem.Text = "Open";
             // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
+            this.editToolStripMenuItem.Text = "Edit";
+            // 
+            // windowToolStripMenuItem
+            // 
+            this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
+            this.windowToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
+            this.windowToolStripMenuItem.Text = "Window";
+            // 
             // tabControl1
             // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.tabControl1.Location = new System.Drawing.Point(106, 27);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(853, 523);
+            this.tabControl1.Size = new System.Drawing.Size(853, 534);
+            this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl1.TabIndex = 2;
+            this.tabControl1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabControl1_DrawItem);
+            this.tabControl1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControl1_MouseDown);
             // 
             // tabPage1
             // 
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(845, 497);
+            this.tabPage1.Size = new System.Drawing.Size(845, 508);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(845, 497);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
             // toolBar1
             // 
-            this.toolBar1.Location = new System.Drawing.Point(12, 324);
+            this.toolBar1.Location = new System.Drawing.Point(9, 27);
             this.toolBar1.Name = "toolBar1";
             this.toolBar1.Size = new System.Drawing.Size(88, 106);
             this.toolBar1.TabIndex = 0;
@@ -136,6 +130,8 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Resize += new System.EventHandler(this.Form1_Resize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
@@ -155,7 +151,6 @@
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
     }
 }
 

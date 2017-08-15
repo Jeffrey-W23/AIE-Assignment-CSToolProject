@@ -60,11 +60,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TextEditDemo.cs">
+    <Compile Include="TabView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="TextEditDemo.Designer.cs">
-      <DependentUpon>TextEditDemo.cs</DependentUpon>
+    <Compile Include="TabView.Designer.cs">
+      <DependentUpon>TabView.cs</DependentUpon>
     </Compile>
     <Compile Include="ToolBar.cs">
       <SubType>UserControl</SubType>
@@ -87,8 +87,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="TextEditDemo.resx">
-      <DependentUpon>TextEditDemo.cs</DependentUpon>
+    <EmbeddedResource Include="TabView.resx">
+      <DependentUpon>TabView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ToolBar.resx">
       <DependentUpon>ToolBar.cs</DependentUpon>
