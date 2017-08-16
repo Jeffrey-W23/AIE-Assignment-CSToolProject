@@ -35,8 +35,8 @@
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.toolBar1 = new CSToolProject.ToolBar();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -103,6 +103,13 @@
             this.tabControl1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabControl1_DrawItem);
             this.tabControl1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControl1_MouseDown);
             // 
+            // toolBar1
+            // 
+            this.toolBar1.Location = new System.Drawing.Point(9, 27);
+            this.toolBar1.Name = "toolBar1";
+            this.toolBar1.Size = new System.Drawing.Size(88, 106);
+            this.toolBar1.TabIndex = 0;
+            // 
             // tabPage1
             // 
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
@@ -111,13 +118,6 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // toolBar1
-            // 
-            this.toolBar1.Location = new System.Drawing.Point(9, 27);
-            this.toolBar1.Name = "toolBar1";
-            this.toolBar1.Size = new System.Drawing.Size(88, 106);
-            this.toolBar1.TabIndex = 0;
             // 
             // Form1
             // 
@@ -131,7 +131,6 @@
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.Resize += new System.EventHandler(this.Form1_Resize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
