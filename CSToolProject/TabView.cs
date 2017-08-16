@@ -19,6 +19,11 @@ namespace CSToolProject
     //--------------------------------------------------------------------------------------
     public partial class TabView : UserControl
     {
+        // Set up painting vars
+        Color PaintColor;
+        bool draw = false;
+        int x, y, lx, ly = 0;
+
         //--------------------------------------------------------------------------------------
         // Default Constructor.
         //--------------------------------------------------------------------------------------
@@ -29,10 +34,31 @@ namespace CSToolProject
 
         private void pictureBox1_Resize(object sender, EventArgs e)
         {
-            pictureBox1.Image = picImage;
+            pictureBox1.Location  = new Point((pictureBox1.Parent.ClientSize.Width / 2), (pictureBox1.Parent.ClientSize.Height / 2));
+        }
 
-            pictureBox1.Location  = new Point((pictureBox1.Parent.ClientSize.Width / 2) - (picImage.Width / 2),
-                              (pictureBox1.Parent.ClientSize.Height / 2) - (picImage.Height / 2));
+        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+        {
+            draw = false;
+            lx = e.X;
+            ly = e.Y;
+        }
+
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            draw = true;
+            x = e.X;
+            y = e.Y;
+        }
+
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+
         }
     }
 }

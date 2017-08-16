@@ -51,6 +51,22 @@ namespace CSToolProject
             {
                 // Set the color of the pencil in main form1
                 mainForm.SetPencilColor(picker.Color);
+
+                // Set the tool type.
+                mainForm.SetToolType(3);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            // Reference to the Form1
+            Form1 mainForm = Parent as Form1;
+
+            //if mainForm isnt null
+            if (mainForm != null)
+            {
+                // Set the tool type.
+                mainForm.SetToolType(1);
             }
         }
     }

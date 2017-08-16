@@ -27,10 +27,27 @@ namespace CSToolProject
         // PencilColor var.
         Color PencilColor;
 
+        // Enum for the different tool types
+        public enum ToolType
+        {
+            Brush = 1,
+            Color = 2,
+            Eraser = 3
+        }
+
+        // the current tool var
+        ToolType currentTool;
+
         // PencilColor Setter
         public void SetPencilColor(Color c)
         {
             PencilColor = c;
+        }
+
+        // ToolTypeSetter
+        public void SetToolType(int t)
+        {
+            currentTool = (ToolType)t;
         }
 
         //--------------------------------------------------------------------------------------
