@@ -31,8 +31,7 @@ namespace CSToolProject
         public enum ToolType
         {
             Brush = 1,
-            Color = 2,
-            Eraser = 3
+            Eraser = 2
         }
 
         // the current tool var
@@ -44,10 +43,16 @@ namespace CSToolProject
             PencilColor = c;
         }
 
-        // ToolTypeSetter
+        // ToolType Setter
         public void SetToolType(int t)
         {
             currentTool = (ToolType)t;
+        }
+
+        // ToolType Getter
+        public int GetToolType()
+        {
+            return (int)currentTool;
         }
 
         //--------------------------------------------------------------------------------------

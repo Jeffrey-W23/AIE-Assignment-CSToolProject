@@ -58,7 +58,28 @@ namespace CSToolProject
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
+            // Reference to the Form1
+            Form1 mainForm = Parent as Form1;
 
+            //if mainForm isnt null
+            //if (mainForm != null)
+            //{
+                if (draw)
+                {
+                    Graphics g = pictureBox1.CreateGraphics();
+
+                    //switch (mainForm.GetToolType())
+                    //{
+                        //case 1:
+                            g.FillEllipse(new SolidBrush(PaintColor), e.X - x + x, e.Y - y + y, 20, 20);
+                            //break;
+                        //case 2:
+                            //break;
+                    //}
+
+                    g.Dispose();
+                }
+            //}
         }
     }
 }

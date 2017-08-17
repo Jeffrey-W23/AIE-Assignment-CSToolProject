@@ -61,6 +61,7 @@
             this.button2.TabIndex = 2;
             this.button2.Text = "Eraser";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.button2_MouseClick);
             // 
             // button3
             // 
