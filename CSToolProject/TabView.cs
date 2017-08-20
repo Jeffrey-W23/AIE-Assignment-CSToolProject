@@ -20,9 +20,21 @@ namespace CSToolProject
     public partial class TabView : UserControl
     {
         // Set up painting vars
-        Color PaintColor;
+        Color PaintColor = Color.Black;
         bool draw = false;
         int x, y, lx, ly = 0;
+
+        // PaintColor Setter
+        public void SetPaintColor(Color c)
+        {
+            PaintColor = c;
+        }
+
+        // Picturebox1 Setter
+        public void SetImage(Image i)
+        {
+            pictureBox1.Image = i;
+        }
 
         //--------------------------------------------------------------------------------------
         // Default Constructor.
@@ -59,19 +71,19 @@ namespace CSToolProject
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             // Reference to the Form1
-            Form1 mainForm = Parent as Form1;
+            //Form1 mainForm = Parent as Form1;
 
             //if mainForm isnt null
             //if (mainForm != null)
             //{
                 if (draw)
                 {
-                    Graphics g = pictureBox1.CreateGraphics();
+                    Graphics g = this.CreateGraphics();
 
                     //switch (mainForm.GetToolType())
                     //{
                         //case 1:
-                            g.FillEllipse(new SolidBrush(PaintColor), e.X - x + x, e.Y - y + y, 20, 20);
+                            g.FillRectangle(new SolidBrush(PaintColor), e.X - x + x, e.Y - y + y, 1, 1);
                             //break;
                         //case 2:
                             //break;

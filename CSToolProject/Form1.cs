@@ -43,6 +43,12 @@ namespace CSToolProject
             PencilColor = c;
         }
 
+        // PencilColor getter
+        public Color GetPencilColor()
+        {
+            return PencilColor;
+        }
+
         // ToolType Setter
         public void SetToolType(int t)
         {
@@ -79,7 +85,7 @@ namespace CSToolProject
             tabview.Dock = DockStyle.Fill;
 
             // Create a new TabPage
-            TabPage page = new TabPage("new"); // TabPage name is set to "new".
+            TabPage page = new TabPage("New"); // TabPage name is set to "new".
 
             // Add the tabview to the tabpage.
             page.Controls.Add(tabview);
@@ -123,7 +129,7 @@ namespace CSToolProject
 
                 // Get current length of the tab.
                 int currentTabLength = TextRenderer.MeasureText(currentPage.Text, tabControl1.Font).Width;
-                
+
                 // adjust the length for what text is written.
                 currentTabLength += LEADING_SPACE + CLOSE_SPACE + CLOSE_AREA;
 
@@ -171,11 +177,49 @@ namespace CSToolProject
                 {
                     //if (MessageBox.Show("Would you like to Close this Tab?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     //{
-                        this.tabControl1.TabPages.RemoveAt(i);
-                        break;
+                    this.tabControl1.TabPages.RemoveAt(i);
+                    break;
                     //}
                 }
             }
+        }
+
+
+
+
+
+
+        // where do I put this? Am I doing this right
+        //tabview.SetPaintColor(PencilColor);
+
+
+        OpenFileDialog dlg = new OpenFileDialog();
+        string strOrgFullPath = "";
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dlg.Filter = "Image (*bmp)|*.bmp|All Files|*.*";
+
+            // Create a new TabView
+            TabView tabview = new TabView();
+
+            // Set Dock to fill
+            tabview.Dock = DockStyle.Fill;
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                tabview.SetImage((System.Drawing.Bitmap)Image.FromFile(dlg.FileName));
+                strOrgFullPath = dlg.FileName;
+            }
+        
+            // Create a new TabPage
+            TabPage page = new TabPage(strOrgFullPath); // TabPage name is set to "new".
+
+            // Add the tabview to the tabpage.
+            page.Controls.Add(tabview);
+
+            // Add the tab to the tab controller.
+            tabControl1.TabPages.Add(page);
         }
     }
 }
