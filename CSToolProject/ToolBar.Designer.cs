@@ -1,98 +1,98 @@
 ﻿namespace CSToolProject
 {
-    partial class ToolBar
-    {
-        /// <summary> 
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
+	partial class ToolBar
+	{
+		/// <summary> 
+		/// Required designer variable.
+		/// </summary>
+		private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+		/// <summary> 
+		/// Clean up any resources being used.
+		/// </summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && (components != null))
+			{
+				components.Dispose();
+			}
+			base.Dispose(disposing);
+		}
 
-        #region Component Designer generated code
+		#region Component Designer generated code
 
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            this.button1 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.SuspendLayout();
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(6, 18);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Pencil";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(26, 2);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(33, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Tools";
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(6, 47);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Eraser";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.button2_MouseClick);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(6, 76);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Color";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // ToolBar
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
-            this.Name = "ToolBar";
-            this.Size = new System.Drawing.Size(88, 106);
-            this.ResumeLayout(false);
-            this.PerformLayout();
+		/// <summary> 
+		/// Required method for Designer support - do not modify 
+		/// the contents of this method with the code editor.
+		/// </summary>
+		private void InitializeComponent()
+		{
+			this.PencilToolBtn = new System.Windows.Forms.Button();
+			this.ToolBarLabel = new System.Windows.Forms.Label();
+			this.EraserToolBtn = new System.Windows.Forms.Button();
+			this.ColorPickerBtn = new System.Windows.Forms.Button();
+			this.SuspendLayout();
+			// 
+			// PencilToolBtn
+			// 
+			this.PencilToolBtn.Location = new System.Drawing.Point(3, 19);
+			this.PencilToolBtn.Name = "PencilToolBtn";
+			this.PencilToolBtn.Size = new System.Drawing.Size(75, 23);
+			this.PencilToolBtn.TabIndex = 0;
+			this.PencilToolBtn.Text = "Pencil";
+			this.PencilToolBtn.UseVisualStyleBackColor = true;
+			this.PencilToolBtn.Click += new System.EventHandler(this.PencilToolBtn_Click);
+			// 
+			// ToolBarLabel
+			// 
+			this.ToolBarLabel.AutoSize = true;
+			this.ToolBarLabel.Location = new System.Drawing.Point(25, 3);
+			this.ToolBarLabel.Name = "ToolBarLabel";
+			this.ToolBarLabel.Size = new System.Drawing.Size(33, 13);
+			this.ToolBarLabel.TabIndex = 1;
+			this.ToolBarLabel.Text = "Tools";
+			// 
+			// EraserToolBtn
+			// 
+			this.EraserToolBtn.Location = new System.Drawing.Point(3, 48);
+			this.EraserToolBtn.Name = "EraserToolBtn";
+			this.EraserToolBtn.Size = new System.Drawing.Size(75, 23);
+			this.EraserToolBtn.TabIndex = 2;
+			this.EraserToolBtn.Text = "Eraser";
+			this.EraserToolBtn.UseVisualStyleBackColor = true;
+			this.EraserToolBtn.Click += new System.EventHandler(this.EraserToolBtn_Click);
+			// 
+			// ColorPickerBtn
+			// 
+			this.ColorPickerBtn.Location = new System.Drawing.Point(3, 77);
+			this.ColorPickerBtn.Name = "ColorPickerBtn";
+			this.ColorPickerBtn.Size = new System.Drawing.Size(75, 23);
+			this.ColorPickerBtn.TabIndex = 3;
+			this.ColorPickerBtn.Text = "Color";
+			this.ColorPickerBtn.UseVisualStyleBackColor = true;
+			this.ColorPickerBtn.Click += new System.EventHandler(this.ColorPickerBtn_Click);
+			// 
+			// ToolBar
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.ColorPickerBtn);
+			this.Controls.Add(this.EraserToolBtn);
+			this.Controls.Add(this.ToolBarLabel);
+			this.Controls.Add(this.PencilToolBtn);
+			this.Name = "ToolBar";
+			this.Size = new System.Drawing.Size(82, 104);
+			this.ResumeLayout(false);
+			this.PerformLayout();
 
-        }
+		}
 
-        #endregion
+		#endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-    }
+		private System.Windows.Forms.Button PencilToolBtn;
+		private System.Windows.Forms.Label ToolBarLabel;
+		private System.Windows.Forms.Button EraserToolBtn;
+		private System.Windows.Forms.Button ColorPickerBtn;
+	}
 }

@@ -66,11 +66,11 @@
     <Compile Include="TabView.Designer.cs">
       <DependentUpon>TabView.cs</DependentUpon>
     </Compile>
-    <Compile Include="ToolBar.cs">
+    <Compile Include="Toolbar.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ToolBar.Designer.cs">
-      <DependentUpon>ToolBar.cs</DependentUpon>
+    <Compile Include="Toolbar.Designer.cs">
+      <DependentUpon>Toolbar.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -90,8 +90,8 @@
     <EmbeddedResource Include="TabView.resx">
       <DependentUpon>TabView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ToolBar.resx">
-      <DependentUpon>ToolBar.cs</DependentUpon>
+    <EmbeddedResource Include="Toolbar.resx">
+      <DependentUpon>Toolbar.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

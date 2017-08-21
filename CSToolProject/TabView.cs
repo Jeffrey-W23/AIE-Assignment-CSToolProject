@@ -24,8 +24,15 @@ namespace CSToolProject
         bool draw = false;
         int x, y, lx, ly = 0;
 
-        // PaintColor Setter
-        public void SetPaintColor(Color c)
+		Form1 form_1;
+
+		public void SetForm(Form1 f)
+		{
+			form_1 = f;
+		}
+
+		// PaintColor Setter
+		public void SetPaintColor(Color c)
         {
             PaintColor = c;
         }
@@ -83,7 +90,7 @@ namespace CSToolProject
                     //switch (mainForm.GetToolType())
                     //{
                         //case 1:
-                            g.FillRectangle(new SolidBrush(PaintColor), e.X - x + x, e.Y - y + y, 1, 1);
+                            g.FillRectangle(new SolidBrush(form_1.GetPencilColor()), e.X - x + x, e.Y - y + y, 1, 1);
                             //break;
                         //case 2:
                             //break;

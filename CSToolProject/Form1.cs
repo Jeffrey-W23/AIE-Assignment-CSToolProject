@@ -14,10 +14,17 @@ using System.Windows.Forms;
 //--------------------------------------------------------------------------------------
 namespace CSToolProject
 {
-    //--------------------------------------------------------------------------------------
-    // The Form1 object, Form.
-    //--------------------------------------------------------------------------------------
-    public partial class Form1 : Form
+	// Enum for the different tool types
+	public enum ToolType
+	{
+		Pencil,
+		Eraser
+	}
+
+	//--------------------------------------------------------------------------------------
+	// The Form1 object, Form.
+	//--------------------------------------------------------------------------------------
+	public partial class Form1 : Form
     {
         // Tab spacing vars.
         const int LEADING_SPACE = 12;
@@ -27,38 +34,31 @@ namespace CSToolProject
         // PencilColor var.
         Color PencilColor;
 
-        // Enum for the different tool types
-        public enum ToolType
-        {
-            Brush = 1,
-            Eraser = 2
-        }
-
         // the current tool var
         ToolType currentTool;
 
         // PencilColor Setter
         public void SetPencilColor(Color c)
         {
-            PencilColor = c;
-        }
+			PencilColor = c;
+		}
 
-        // PencilColor getter
+        // PencilColor Getter
         public Color GetPencilColor()
         {
             return PencilColor;
         }
 
         // ToolType Setter
-        public void SetToolType(int t)
+        public void SetToolType(ToolType t)
         {
-            currentTool = (ToolType)t;
+            currentTool = t;
         }
 
         // ToolType Getter
-        public int GetToolType()
+        public ToolType GetToolType()
         {
-            return (int)currentTool;
+            return currentTool;
         }
 
         //--------------------------------------------------------------------------------------
@@ -80,6 +80,9 @@ namespace CSToolProject
         {
             // Create a new TabView
             TabView tabview = new TabView();
+
+			// Set form, for passing in color, tool, etc
+			tabview.SetForm(this);
 
             // Set Dock to fill
             tabview.Dock = DockStyle.Fill;
@@ -170,7 +173,7 @@ namespace CSToolProject
                 Rectangle r = tabControl1.GetTabRect(i);
 
                 //Getting the position of the "x" mark.
-                Rectangle closeButton = new Rectangle(r.Right - 15, r.Top + 4, 9, 7);
+                Rectangle closeButton = new Rectangle(r.Right - 15, r.Top + 4, 20, 20);
 
                 // If the X button is pressed close the tab.
                 if (closeButton.Contains(e.Location))
@@ -192,12 +195,11 @@ namespace CSToolProject
         // where do I put this? Am I doing this right
         //tabview.SetPaintColor(PencilColor);
 
-
-        OpenFileDialog dlg = new OpenFileDialog();
-        string strOrgFullPath = "";
-
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            OpenFileDialog dlg = new OpenFileDialog();
+            string strOrgFullPath = "";
+
             dlg.Filter = "Image (*bmp)|*.bmp|All Files|*.*";
 
             // Create a new TabView
@@ -223,3 +225,12 @@ namespace CSToolProject
         }
     }
 }
+
+
+// Save text
+//SaveFileDialog save = new SaveFileDialog();
+
+//if (save.ShowDialog() == DialogResult.OK)
+//{
+//	File.WriteAllText(save.FileName, "Hello world");	
+//}
