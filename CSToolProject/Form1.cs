@@ -162,27 +162,29 @@ namespace CSToolProject
         //--------------------------------------------------------------------------------------
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
         {
-			// Color the tab headers
-			Graphics g = e.Graphics;
-			TabPage tp = tabControl1.TabPages[e.Index];
+            //if (tabControl1.TabPages != null)
+            //{
+                //Color the tab headers
+                Graphics g = e.Graphics;
 
-			//Rectangle to draw over the tab
-			RectangleF headerRect = new RectangleF(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
+                //Rectangle to draw over the tab
+                RectangleF headerRect = new RectangleF(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
 
-			// The non-selected tab color.
-			SolidBrush sb = new SolidBrush(Color.Transparent); //Color.FromArgb(200,200,200)
+                // The non-selected tab color.
+                SolidBrush sb = new SolidBrush(Color.Transparent); //Color.FromArgb(200,200,200)
 
-			// The selected tab color.
-			if (tabControl1.SelectedIndex == e.Index)
-				sb.Color = Color.FromArgb(255, 255, 255); // DodgerBlue; // LightSkyBlue;
+                // The selected tab color.
+                if (tabControl1.SelectedIndex == e.Index)
+                    sb.Color = Color.FromArgb(255, 255, 255); // DodgerBlue; // LightSkyBlue;
 
-			// Apply color changes from above.
-			g.FillRectangle(sb, e.Bounds);
-			
-			// Draw an x icon on the tab.
-			e.Graphics.DrawString("x", e.Font, Brushes.Black, e.Bounds.Right - CLOSE_AREA, e.Bounds.Top + 4);
-            e.Graphics.DrawString(this.tabControl1.TabPages[e.Index].Text, e.Font, Brushes.Black, e.Bounds.Left + LEADING_SPACE, e.Bounds.Top + 4);
-            e.DrawFocusRectangle();
+                // Apply color changes from above.
+                g.FillRectangle(sb, e.Bounds);
+
+                // Draw an x icon on the tab.
+                e.Graphics.DrawString("x", e.Font, Brushes.Black, e.Bounds.Right - CLOSE_AREA, e.Bounds.Top + 4);
+                //e.Graphics.DrawString(tabControl1.TabPages[e.Index].Text, e.Font, Brushes.Black, e.Bounds.Left + LEADING_SPACE, e.Bounds.Top + 4); // WONT WORK ON HOME COMPUTER?? ASK RICHARD.
+                e.DrawFocusRectangle();
+            //}
 		}
 
         //--------------------------------------------------------------------------------------
