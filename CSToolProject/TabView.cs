@@ -19,23 +19,24 @@ namespace CSToolProject
     //--------------------------------------------------------------------------------------
     public partial class TabView : UserControl
     {
-        // Set up painting vars
-        Color PaintColor = Color.Black;
-        bool draw = false;
-        int x, y, lx, ly = 0;
+		// paint color.
+        Color PencilColor = Color.Black;
 
+		// Bool for if drawing can be done or not.
+		bool draw = false;
+
+		// x and y for the drawing tool.
+		int x = 0;
+		int y = 0;
+
+		// Var for Form1
 		Form1 form_1;
 
+		// Form setter. For getting data from form1 and other UserContorls.
 		public void SetForm(Form1 f)
 		{
 			form_1 = f;
 		}
-
-		// PaintColor Setter
-		public void SetPaintColor(Color c)
-        {
-            PaintColor = c;
-        }
 
         // Picturebox1 Setter
         public void SetImage(Image i)
@@ -51,54 +52,94 @@ namespace CSToolProject
             InitializeComponent();
         }
 
-        private void pictureBox1_Resize(object sender, EventArgs e)
+		//--------------------------------------------------------------------------------------
+		// pictureBox1_Resize: Function called when a resize of the picturebox occurs.
+		//
+		// Param:
+		//		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+		//		e: EventArgs type, represents the base class for classes that cotain event data.
+		//--------------------------------------------------------------------------------------
+		private void pictureBox1_Resize(object sender, EventArgs e)
         {
+			// put image in the center of screen.
             pictureBox1.Location  = new Point((pictureBox1.Parent.ClientSize.Width / 2), (pictureBox1.Parent.ClientSize.Height / 2));
         }
 
-        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+		//--------------------------------------------------------------------------------------
+		// pictureBox1_MouseClick: Mouse click options for tab contorller.
+		//
+		// Param:
+		//		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+		//		e: MouseEventArgs type, Provides data for the MouseUp, MouseDown, and MouseMove events.
+		//--------------------------------------------------------------------------------------
+		private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
 
         }
 
-        private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+		//--------------------------------------------------------------------------------------
+		// pictureBox1_MouseUp: Mouse up options for tab contorller.
+		//
+		// Param:
+		//		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+		//		e: MouseEventArgs type, Provides data for the MouseUp, MouseDown, and MouseMove events.
+		//--------------------------------------------------------------------------------------
+		private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
+			// set drawing to false.
             draw = false;
-            lx = e.X;
-            ly = e.Y;
         }
 
-        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+		//--------------------------------------------------------------------------------------
+		// pictureBox1_MouseDown: Mouse down options for tab contorller.
+		//
+		// Param:
+		//		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+		//		e: MouseEventArgs type, Provides data for the MouseUp, MouseDown, and MouseMove events.
+		//--------------------------------------------------------------------------------------
+		private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
+			// set drawing to true
             draw = true;
+
+			// set the mouse x and y
             x = e.X;
             y = e.Y;
         }
 
-        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+		//--------------------------------------------------------------------------------------
+		// pictureBox1_MouseMove: Mouse move options for tab contorller.
+		//
+		// Param:
+		//		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+		//		e: MouseEventArgs type, Provides data for the MouseUp, MouseDown, and MouseMove events.
+		//--------------------------------------------------------------------------------------
+		private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            // Reference to the Form1
-            //Form1 mainForm = Parent as Form1;
+			// If able to draw
+			if (draw)
+			{
+				// Create grpahics.
+				Graphics g = this.CreateGraphics();
 
-            //if mainForm isnt null
-            //if (mainForm != null)
-            //{
-                if (draw)
-                {
-                    Graphics g = this.CreateGraphics();
+				// Switch statement for which tool is selected.
+				switch (form_1.GetToolType())
+				{
+					// Pencil Tool
+					case ToolType.Pencil:
 
-                    //switch (mainForm.GetToolType())
-                    //{
-                        //case 1:
-                            g.FillRectangle(new SolidBrush(form_1.GetPencilColor()), e.X - x + x, e.Y - y + y, 1, 1);
-                            //break;
-                        //case 2:
-                            //break;
-                    //}
+						// Draw to screen with the pencil tool.
+						g.FillRectangle(new SolidBrush(form_1.GetPencilColor()), e.X - x + x, e.Y - y + y, 1, 1);
+						break;
 
-                    g.Dispose();
-                }
-            //}
-        }
+					// Eraser Tool
+					case ToolType.Eraser:
+						break;
+				}
+
+				// Dispose of the grpahics class
+				g.Dispose();
+			}
+		}
     }
 }
