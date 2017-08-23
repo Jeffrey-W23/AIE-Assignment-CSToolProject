@@ -29,6 +29,9 @@ namespace CSToolProject
 		int x = 0;
 		int y = 0;
 
+		// the amount to zoom in or out by.
+		int zoomFactor;
+
 		// Var for Form1
 		Form1 form_1;
 
@@ -44,10 +47,22 @@ namespace CSToolProject
             pictureBox1.Image = i;
         }
 
-        //--------------------------------------------------------------------------------------
-        // Default Constructor.
-        //--------------------------------------------------------------------------------------
-        public TabView()
+		// Picturebox1 Setter
+		public PictureBox GetPictureBox()
+		{
+			return pictureBox1;
+		}
+
+		// Picturebox1 Setter
+		public void SetPictureBox(PictureBox p)
+		{
+			pictureBox1 = p;
+		}
+
+		//--------------------------------------------------------------------------------------
+		// Default Constructor.
+		//--------------------------------------------------------------------------------------
+		public TabView()
         {
             InitializeComponent();
         }
@@ -62,7 +77,7 @@ namespace CSToolProject
 		private void pictureBox1_Resize(object sender, EventArgs e)
         {
 			// put image in the center of screen.
-            pictureBox1.Location  = new Point((pictureBox1.Parent.ClientSize.Width / 2), (pictureBox1.Parent.ClientSize.Height / 2));
+            //pictureBox1.Location  = new Point((pictureBox1.Parent.ClientSize.Width / 2), (pictureBox1.Parent.ClientSize.Height / 2));
         }
 
 		//--------------------------------------------------------------------------------------
@@ -75,19 +90,6 @@ namespace CSToolProject
 		private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
 
-        }
-
-		//--------------------------------------------------------------------------------------
-		// pictureBox1_MouseUp: Mouse up options for tab contorller.
-		//
-		// Param:
-		//		sender: object type, Supports all classes in the .NET Framework class hierarchy.
-		//		e: MouseEventArgs type, Provides data for the MouseUp, MouseDown, and MouseMove events.
-		//--------------------------------------------------------------------------------------
-		private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
-        {
-			// set drawing to false.
-            draw = false;
         }
 
 		//--------------------------------------------------------------------------------------
@@ -108,6 +110,19 @@ namespace CSToolProject
         }
 
 		//--------------------------------------------------------------------------------------
+		// pictureBox1_MouseUp: Mouse up options for tab contorller.
+		//
+		// Param:
+		//		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+		//		e: MouseEventArgs type, Provides data for the MouseUp, MouseDown, and MouseMove events.
+		//--------------------------------------------------------------------------------------
+		private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+		{
+			// set drawing to false.
+			draw = false;
+		}
+
+		//--------------------------------------------------------------------------------------
 		// pictureBox1_MouseMove: Mouse move options for tab contorller.
 		//
 		// Param:
@@ -120,7 +135,7 @@ namespace CSToolProject
 			if (draw)
 			{
 				// Create grpahics.
-				Graphics g = this.CreateGraphics();
+				Graphics g = pictureBox1.CreateGraphics();
 
 				// Switch statement for which tool is selected.
 				switch (form_1.GetToolType())
@@ -135,11 +150,45 @@ namespace CSToolProject
 					// Eraser Tool
 					case ToolType.Eraser:
 						break;
+
+					// ZoomIn Tool
+					case ToolType.ZoomIn:
+
+						// Check if allowed to zoom
+						if (zoomFactor < 50)
+						{
+							// change zoom level
+							zoomFactor += 2;
+						}
+
+						// apply the zoom.
+						pictureBox1.Width = pictureBox1.Width * zoomFactor;
+						pictureBox1.Height = pictureBox1.Height * zoomFactor;
+						pictureBox1.Refresh();
+
+						break;
+
+					// ZoomOut Tool
+					case ToolType.ZoomOut:
+
+						// Check if allowed to zoom
+						if (zoomFactor > 0)
+						{
+							// change zoom level
+							zoomFactor -= 2;
+						}
+
+						break;
 				}
 
 				// Dispose of the grpahics class
 				g.Dispose();
 			}
 		}
-    }
+
+		private void pictureBox1_Click(object sender, EventArgs e)
+		{
+
+		}
+	}
 }

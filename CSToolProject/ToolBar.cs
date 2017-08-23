@@ -93,6 +93,46 @@ namespace CSToolProject
 				mainForm.SetPencilColor(picker.Color);
 			}
 		}
+
+		//--------------------------------------------------------------------------------------
+		// ZoomInBtn_Click: The click event for the zoom in button.
+		//
+		// Param:
+		//		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+		//		e: EventArgs type, represents the base class for classes that cotain event data.
+		//--------------------------------------------------------------------------------------
+		private void ZoomInBtn_Click(object sender, EventArgs e)
+		{
+			// Reference to the Form1
+			Form1 mainForm = Parent as Form1;
+
+			//if mainForm isnt null
+			if (mainForm != null)
+			{
+				// Set the tool type.
+				mainForm.SetToolType(ToolType.ZoomIn);
+			}
+		}
+
+		//--------------------------------------------------------------------------------------
+		// ZoomOutBtn_Click: The click event for the zoom out button.
+		//
+		// Param:
+		//		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+		//		e: EventArgs type, represents the base class for classes that cotain event data.
+		//--------------------------------------------------------------------------------------
+		private void ZoomOutBtn_Click(object sender, EventArgs e)
+		{
+			// Reference to the Form1
+			Form1 mainForm = Parent as Form1;
+
+			//if mainForm isnt null
+			if (mainForm != null)
+			{
+				// Set the tool type.
+				mainForm.SetToolType(ToolType.ZoomOut);
+			}
+		}
 	}
 }
 

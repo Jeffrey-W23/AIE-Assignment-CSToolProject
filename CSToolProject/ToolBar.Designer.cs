@@ -32,6 +32,8 @@
 			this.ToolBarLabel = new System.Windows.Forms.Label();
 			this.EraserToolBtn = new System.Windows.Forms.Button();
 			this.ColorPickerBtn = new System.Windows.Forms.Button();
+			this.ZoomInBtn = new System.Windows.Forms.Button();
+			this.ZoomOutBtn = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// PencilToolBtn
@@ -73,16 +75,38 @@
 			this.ColorPickerBtn.UseVisualStyleBackColor = true;
 			this.ColorPickerBtn.Click += new System.EventHandler(this.ColorPickerBtn_Click);
 			// 
+			// ZoomInBtn
+			// 
+			this.ZoomInBtn.Location = new System.Drawing.Point(3, 106);
+			this.ZoomInBtn.Name = "ZoomInBtn";
+			this.ZoomInBtn.Size = new System.Drawing.Size(75, 23);
+			this.ZoomInBtn.TabIndex = 4;
+			this.ZoomInBtn.Text = "Zoom In";
+			this.ZoomInBtn.UseVisualStyleBackColor = true;
+			this.ZoomInBtn.Click += new System.EventHandler(this.ZoomInBtn_Click);
+			// 
+			// ZoomOutBtn
+			// 
+			this.ZoomOutBtn.Location = new System.Drawing.Point(3, 135);
+			this.ZoomOutBtn.Name = "ZoomOutBtn";
+			this.ZoomOutBtn.Size = new System.Drawing.Size(75, 23);
+			this.ZoomOutBtn.TabIndex = 5;
+			this.ZoomOutBtn.Text = "Zoom Out";
+			this.ZoomOutBtn.UseVisualStyleBackColor = true;
+			this.ZoomOutBtn.Click += new System.EventHandler(this.ZoomOutBtn_Click);
+			// 
 			// ToolBar
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.ZoomOutBtn);
+			this.Controls.Add(this.ZoomInBtn);
 			this.Controls.Add(this.ColorPickerBtn);
 			this.Controls.Add(this.EraserToolBtn);
 			this.Controls.Add(this.ToolBarLabel);
 			this.Controls.Add(this.PencilToolBtn);
 			this.Name = "ToolBar";
-			this.Size = new System.Drawing.Size(82, 104);
+			this.Size = new System.Drawing.Size(82, 162);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -94,5 +118,7 @@
 		private System.Windows.Forms.Label ToolBarLabel;
 		private System.Windows.Forms.Button EraserToolBtn;
 		private System.Windows.Forms.Button ColorPickerBtn;
+		private System.Windows.Forms.Button ZoomInBtn;
+		private System.Windows.Forms.Button ZoomOutBtn;
 	}
 }

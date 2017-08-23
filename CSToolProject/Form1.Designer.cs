@@ -120,7 +120,7 @@
 			// 
 			this.toolBar1.Location = new System.Drawing.Point(12, 27);
 			this.toolBar1.Name = "toolBar1";
-			this.toolBar1.Size = new System.Drawing.Size(88, 106);
+			this.toolBar1.Size = new System.Drawing.Size(88, 162);
 			this.toolBar1.TabIndex = 3;
 			// 
 			// Form1

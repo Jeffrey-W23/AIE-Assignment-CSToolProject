@@ -18,7 +18,9 @@ namespace CSToolProject
 	public enum ToolType
 	{
 		Pencil,
-		Eraser
+		Eraser,
+		ZoomIn,
+		ZoomOut
 	}
 
 	//--------------------------------------------------------------------------------------
@@ -71,7 +73,7 @@ namespace CSToolProject
         {
             InitializeComponent();
         }
-
+		
 		//--------------------------------------------------------------------------------------
 		// newToolStripMenuItem_Click: What to do when the new button is pressed under the menu bar.
 		//
@@ -150,7 +152,20 @@ namespace CSToolProject
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
 			// Create new tab
-			NewTab("New Image");
+			TabView tabview = NewTab("New Image");
+
+			// Create new bitmap
+			Bitmap bitm = new Bitmap(400, 400); // Let the user pick a width and hieght in a seperate form.
+
+			// set color starting color.
+			using (Graphics gfx = Graphics.FromImage(bitm))
+			using (SolidBrush brush = new SolidBrush(Color.White))
+			{
+				gfx.FillRectangle(brush, 0, 0, 400, 400); // let the user pick a background color or not.
+			}
+
+			// Set image on the tabview
+			tabview.SetImage(bitm);
 		}
 
         //--------------------------------------------------------------------------------------
@@ -162,8 +177,8 @@ namespace CSToolProject
         //--------------------------------------------------------------------------------------
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
         {
-            //if (tabControl1.TabPages != null)
-            //{
+            if (e.Index < tabControl1.TabPages.Count)
+            {
                 //Color the tab headers
                 Graphics g = e.Graphics;
 
@@ -182,9 +197,9 @@ namespace CSToolProject
 
                 // Draw an x icon on the tab.
                 e.Graphics.DrawString("x", e.Font, Brushes.Black, e.Bounds.Right - CLOSE_AREA, e.Bounds.Top + 4);
-                //e.Graphics.DrawString(tabControl1.TabPages[e.Index].Text, e.Font, Brushes.Black, e.Bounds.Left + LEADING_SPACE, e.Bounds.Top + 4); // WONT WORK ON HOME COMPUTER?? ASK RICHARD.
+                e.Graphics.DrawString(tabControl1.TabPages[e.Index].Text, e.Font, Brushes.Black, e.Bounds.Left + LEADING_SPACE, e.Bounds.Top + 4); // WONT WORK ON HOME COMPUTER?? ASK RICHARD.
                 e.DrawFocusRectangle();
-            //}
+            }
 		}
 
         //--------------------------------------------------------------------------------------
@@ -197,7 +212,7 @@ namespace CSToolProject
         private void Form1_Load(object sender, EventArgs e) // SPLIT THIS INTO 2 NEW FUNCTIONS, 1 BEING A RESIZE FUNCTION ANF THE OTHER A NEW FUNCTION.
         {
 			// Start the application with a new tab
-			NewTab("New Image");
+			NewTab("New Image"); // Maybe take out, start with no tabs opened and buttons disabled.
 
 			// Remove default tab that TabControl needs to create to function.
 			tabControl1.Controls.Remove(tabPage1);
