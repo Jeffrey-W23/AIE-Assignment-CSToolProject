@@ -76,8 +76,7 @@ namespace CSToolProject
 		//--------------------------------------------------------------------------------------
 		private void pictureBox1_Resize(object sender, EventArgs e)
         {
-			// put image in the center of screen.
-            //pictureBox1.Location  = new Point((pictureBox1.Parent.ClientSize.Width / 2), (pictureBox1.Parent.ClientSize.Height / 2));
+
         }
 
 		//--------------------------------------------------------------------------------------
@@ -144,12 +143,15 @@ namespace CSToolProject
 					case ToolType.Pencil:
 
 						// Draw to screen with the pencil tool.
-						g.FillRectangle(new SolidBrush(form_1.GetPencilColor()), e.X - x + x, e.Y - y + y, 1, 1);
+						g.FillRectangle(new SolidBrush(form_1.GetPencilColor()), e.X - x + x, e.Y - y + y, form_1.GetToolSize(), form_1.GetToolSize());
 						break;
 
 					// Eraser Tool
 					case ToolType.Eraser:
-						break;
+
+                        // erase part of image.
+                        g.FillRectangle(new SolidBrush(form_1.GetBackgroundImageColor()), e.X - x + x, e.Y - y + y, form_1.GetToolSize(), form_1.GetToolSize());
+                        break;
 
 					// ZoomIn Tool
 					case ToolType.ZoomIn:

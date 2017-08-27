@@ -34,3 +34,4 @@ C:\Users\Thomas Wiltshire\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolPr
 C:\Users\Thomas Wiltshire\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolProject\obj\Debug\CSToolProject.TabView.resources
 C:\Users\Thomas Wiltshire\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolProject\obj\Debug\CSToolProject.ToolBar.resources
 C:\Users\Thomas Wiltshire\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolProject\obj\Debug\CSToolProject.csproj.GenerateResource.Cache
+C:\Users\Thomas Wiltshire\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolProject\obj\Debug\CSToolProject.Form2.resources

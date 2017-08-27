@@ -39,6 +39,12 @@ namespace CSToolProject
 		// PencilColor var.
 		Color PencilColor = Color.Black;
 
+        // Background color var
+        Color ImageBackColor = Color.Black;
+
+        // Tool size var
+        int ToolSize = 1;
+
         // the current tool var
         ToolType currentTool;
 
@@ -64,6 +70,30 @@ namespace CSToolProject
         public ToolType GetToolType()
         {
             return currentTool;
+        }
+
+        // Setter for Background Color
+        public void SetBackgroundImageColor(Color c)
+        {
+            ImageBackColor = c;
+        }
+
+        // Getter for Background Color
+        public Color GetBackgroundImageColor()
+        {
+            return ImageBackColor;
+        }
+
+        // Setter for tool size
+        public void SetToolSize(int i)
+        {
+            ToolSize = i;
+        }
+
+        // Getter for tool size
+        public int GetToolSize()
+        {
+            return ToolSize;
         }
 
         //--------------------------------------------------------------------------------------
@@ -151,22 +181,34 @@ namespace CSToolProject
         //--------------------------------------------------------------------------------------
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-			// Create new tab
-			TabView tabview = NewTab("New Image");
+            // Create and display a new forms for options on creating the new project.
+            var form2 = new Form2();
+            form2.StartPosition = FormStartPosition.CenterParent;
+            form2.ShowDialog();
 
-			// Create new bitmap
-			Bitmap bitm = new Bitmap(400, 400); // Let the user pick a width and hieght in a seperate form.
+            // If the okay button is pressed.
+            if (form2.GetOkayPressed())
+            {
+                // Create new tab
+                TabView tabview = NewTab("New Image");
 
-			// set color starting color.
-			using (Graphics gfx = Graphics.FromImage(bitm))
-			using (SolidBrush brush = new SolidBrush(Color.White))
-			{
-				gfx.FillRectangle(brush, 0, 0, 400, 400); // let the user pick a background color or not.
-			}
+                // Create new bitmap
+                Bitmap bitm = new Bitmap(form2.GetImageWidth(), form2.GetImageHeight()); // Let the user pick a width and hieght in a seperate form.
 
-			// Set image on the tabview
-			tabview.SetImage(bitm);
-		}
+                // set color starting color.
+                using (Graphics gfx = Graphics.FromImage(bitm))
+                using (SolidBrush brush = new SolidBrush(form2.GetImageColor()))
+                {
+                    gfx.FillRectangle(brush, 0, 0, form2.GetImageWidth(), form2.GetImageHeight()); // let the user pick a background color or not.
+                }
+
+                // Set the background color for use with the eraser tool.
+                SetBackgroundImageColor(form2.GetImageColor());
+
+                // Set image on the tabview
+                tabview.SetImage(bitm);
+            }
+        }
 
         //--------------------------------------------------------------------------------------
         // tabControl1_DrawItem: Draw options for the tabs and tab controller.
@@ -211,9 +253,6 @@ namespace CSToolProject
         //--------------------------------------------------------------------------------------
         private void Form1_Load(object sender, EventArgs e) // SPLIT THIS INTO 2 NEW FUNCTIONS, 1 BEING A RESIZE FUNCTION ANF THE OTHER A NEW FUNCTION.
         {
-			// Start the application with a new tab
-			NewTab("New Image"); // Maybe take out, start with no tabs opened and buttons disabled.
-
 			// Remove default tab that TabControl needs to create to function.
 			tabControl1.Controls.Remove(tabPage1);
 		}
@@ -370,10 +409,14 @@ namespace CSToolProject
 				// store the file path.
 				filename = dlg.SafeFileName;
 
+                // Create a new tab
 				TabView tabview = NewTab(filename);
-				
-				// Set image to the new tabview.
-				tabview.SetImage((System.Drawing.Bitmap)Image.FromFile(dlg.FileName));
+
+                // Set the background color for the opened image.
+                SetBackgroundImageColor(Color.Transparent);
+
+                // Set image to the new tabview.
+                tabview.SetImage((System.Drawing.Bitmap)Image.FromFile(dlg.FileName));
 			}
         }
     }
