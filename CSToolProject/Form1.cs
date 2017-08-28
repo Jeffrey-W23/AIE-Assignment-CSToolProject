@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -195,15 +196,24 @@ namespace CSToolProject
                 // Create new bitmap
                 Bitmap bitm = new Bitmap(form2.GetImageWidth(), form2.GetImageHeight()); // Let the user pick a width and hieght in a seperate form.
 
-                // set color starting color.
-                using (Graphics gfx = Graphics.FromImage(bitm))
-                using (SolidBrush brush = new SolidBrush(form2.GetImageColor()))
-                {
-                    gfx.FillRectangle(brush, 0, 0, form2.GetImageWidth(), form2.GetImageHeight()); // let the user pick a background color or not.
-                }
-
+				// set color starting color.
+				using (Graphics gfx = Graphics.FromImage(bitm))
+				{
+					using (SolidBrush brush = new SolidBrush(form2.GetImageColor()))
+					{
+						gfx.FillRectangle(brush, 0, 0, form2.GetImageWidth(), form2.GetImageHeight()); // let the user pick a background color or not.
+					}
+				}
+				 
                 // Set the background color for use with the eraser tool.
                 SetBackgroundImageColor(form2.GetImageColor());
+
+				// Set the Background color for tabview.
+				tabview.SetBackgroundColor(form2.GetImageColor());
+
+				// Set the ImageHeight and Imagewidth for tabview.
+				tabview.SetImageHeight(form2.GetImageHeight());
+				tabview.SetImageWidth(form2.GetImageWidth());
 
                 // Set image on the tabview
                 tabview.SetImage(bitm);
@@ -415,17 +425,41 @@ namespace CSToolProject
                 // Set the background color for the opened image.
                 SetBackgroundImageColor(Color.Transparent);
 
-                // Set image to the new tabview.
-                tabview.SetImage((System.Drawing.Bitmap)Image.FromFile(dlg.FileName));
+				// Set image to the new tabview.
+				Bitmap test = new Bitmap(Image.FromFile(dlg.FileName));
+                tabview.SetImage(test);
 			}
         }
-    }
+
+
+
+
+
+
+		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SaveFileDialog save = new SaveFileDialog();
+
+			save.Filter = "Images|*.png;*.bmp;*.jpg";
+			ImageFormat format = ImageFormat.Png;
+
+			if (save.ShowDialog() == DialogResult.OK)
+			{
+				string ext = System.IO.Path.GetExtension(save.FileName);
+
+				switch (ext)
+				{
+					case ".jpg":
+						format = ImageFormat.Jpeg;
+						break;
+					case ".bmp":
+						format = ImageFormat.Bmp;
+						break;
+				}
+
+				Image image = ((TabView)tabControl1.SelectedTab.Controls[0]).GetImage();
+				image.Save(save.FileName, format);
+			}
+		}
+	}
 }
-
-// Save text
-//SaveFileDialog save = new SaveFileDialog();
-
-//if (save.ShowDialog() == DialogResult.OK)
-//{
-//	File.WriteAllText(save.FileName, "Hello world");	
-//}

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 
 //--------------------------------------------------------------------------------------
 // Namespace CSToolProject
@@ -19,8 +20,18 @@ namespace CSToolProject
     //--------------------------------------------------------------------------------------
     public partial class TabView : UserControl
     {
+		protected override CreateParams CreateParams
+		{
+			get
+			{
+				CreateParams cp = base.CreateParams;
+				cp.ExStyle |= 0x02000000;
+				return cp;
+			}
+		}
+
 		// paint color.
-        Color PencilColor = Color.Black;
+		Color PencilColor = Color.Black;
 
 		// Bool for if drawing can be done or not.
 		bool draw = false;
@@ -29,8 +40,15 @@ namespace CSToolProject
 		int x = 0;
 		int y = 0;
 
-		// the amount to zoom in or out by.
-		int zoomFactor;
+		// The zoom level of the image
+		int zoomfactor = 1;
+
+		// Image Width and Height
+		int ImageHeight = 1;
+		int ImageWidth = 1;
+
+		// Background image color
+		Color BackgroundColor = Color.White;
 
 		// Var for Form1
 		Form1 form_1;
@@ -41,11 +59,21 @@ namespace CSToolProject
 			form_1 = f;
 		}
 
-        // Picturebox1 Setter
-        public void SetImage(Image i)
+		// Picturebox1 Setter
+		public Image GetImage()
+		{
+			return pictureBox1.Image;
+		}
+
+		// Picturebox1 Setter
+		public void SetImage(Image i)
         {
+
             pictureBox1.Image = i;
-        }
+
+			pictureBox1.Height = i.Height;
+			pictureBox1.Width = i.Width;
+		}
 
 		// Picturebox1 Setter
 		public PictureBox GetPictureBox()
@@ -59,12 +87,49 @@ namespace CSToolProject
 			pictureBox1 = p;
 		}
 
+		// ImageHeight Getter
+		public int GetImageHeight()
+		{
+			return ImageHeight;
+		}
+
+		// ImageHeight Setter
+		public void SetImageHeight(int i)
+		{
+			ImageHeight = i;
+		}
+
+		// ImageWidth Getter
+		public int GetImageWidth()
+		{
+			return ImageWidth;
+		}
+
+		// ImageWidth Setter
+		public void SetImageWidth(int i)
+		{
+			ImageWidth = i;
+		}
+
+		// background color getter
+		public Color GetBackgroundColor()
+		{
+			return BackgroundColor;
+		}
+
+		// background color setter
+		public void SetBackgroundColor(Color c)
+		{
+			BackgroundColor = c;
+		}
+
 		//--------------------------------------------------------------------------------------
 		// Default Constructor.
 		//--------------------------------------------------------------------------------------
 		public TabView()
         {
             InitializeComponent();
+			
         }
 
 		//--------------------------------------------------------------------------------------
@@ -88,8 +153,12 @@ namespace CSToolProject
 		//--------------------------------------------------------------------------------------
 		private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
+			if (form_1.GetToolType() == ToolType.ZoomIn)
+				ZoomInCanvas();
 
-        }
+			if (form_1.GetToolType() == ToolType.ZoomOut)
+				ZoomOutCanvas();	
+		}
 
 		//--------------------------------------------------------------------------------------
 		// pictureBox1_MouseDown: Mouse down options for tab contorller.
@@ -133,64 +202,82 @@ namespace CSToolProject
 			// If able to draw
 			if (draw)
 			{
+
+
+				int wid = pictureBox1.Image.Width;
+				int hgt = pictureBox1.Image.Height;
+				Bitmap bm = new Bitmap(pictureBox1.Image, wid, hgt);
+				//pictureBox1.Image = null;
+				//pictureBox1.Refresh();
+				
 				// Create grpahics.
-				Graphics g = pictureBox1.CreateGraphics();
-
-				// Switch statement for which tool is selected.
-				switch (form_1.GetToolType())
+				using (Graphics g = Graphics.FromImage(bm))
 				{
-					// Pencil Tool
-					case ToolType.Pencil:
+					g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
 
-						// Draw to screen with the pencil tool.
-						g.FillRectangle(new SolidBrush(form_1.GetPencilColor()), e.X - x + x, e.Y - y + y, form_1.GetToolSize(), form_1.GetToolSize());
-						break;
+					g.InterpolationMode = InterpolationMode.Bicubic;
 
-					// Eraser Tool
-					case ToolType.Eraser:
+					// Switch statement for which tool is selected.
+					switch (form_1.GetToolType())
+					{
+						// Pencil Tool
+						case ToolType.Pencil:
 
-                        // erase part of image.
-                        g.FillRectangle(new SolidBrush(form_1.GetBackgroundImageColor()), e.X - x + x, e.Y - y + y, form_1.GetToolSize(), form_1.GetToolSize());
-                        break;
+							// Draw to screen with the pencil tool.
+							g.FillRectangle(new SolidBrush(form_1.GetPencilColor()), (e.X - x + x) / zoomfactor, (e.Y - y + y) / zoomfactor, form_1.GetToolSize(), form_1.GetToolSize());
+							pictureBox1.Invalidate();
 
-					// ZoomIn Tool
-					case ToolType.ZoomIn:
+							pictureBox1.Image = bm;
+							pictureBox1.Refresh();
 
-						// Check if allowed to zoom
-						if (zoomFactor < 50)
-						{
-							// change zoom level
-							zoomFactor += 2;
-						}
+							break;
 
-						// apply the zoom.
-						pictureBox1.Width = pictureBox1.Width * zoomFactor;
-						pictureBox1.Height = pictureBox1.Height * zoomFactor;
-						pictureBox1.Refresh();
+						// Eraser Tool
+						case ToolType.Eraser:
 
-						break;
+							// erase part of image.
+							g.FillRectangle(new SolidBrush(Color.Transparent), (e.X - x + x) / zoomfactor, (e.Y - y + y) / zoomfactor, form_1.GetToolSize(), form_1.GetToolSize());
+							pictureBox1.Invalidate();
 
-					// ZoomOut Tool
-					case ToolType.ZoomOut:
+							pictureBox1.Image = bm;
+							pictureBox1.Refresh();
 
-						// Check if allowed to zoom
-						if (zoomFactor > 0)
-						{
-							// change zoom level
-							zoomFactor -= 2;
-						}
-
-						break;
+							break;
+					}
 				}
-
-				// Dispose of the grpahics class
-				g.Dispose();
 			}
 		}
 
-		private void pictureBox1_Click(object sender, EventArgs e)
-		{
 
+
+
+
+
+
+
+
+
+		private void ZoomInCanvas()
+		{
+			zoomfactor *= 2;
+
+			pictureBox1.Height *= 2;
+			pictureBox1.Width *= 2;
+			pictureBox1.Refresh();
+		}
+
+		private void ZoomOutCanvas()
+		{
+			zoomfactor /= 2;
+
+			pictureBox1.Height /= 2;
+			pictureBox1.Width /= 2;
+			pictureBox1.Refresh();
+		}
+
+		private void pictureBox1_MouseEnter(object sender, EventArgs e)
+		{
+			pictureBox1.Focus();
 		}
 	}
 }
