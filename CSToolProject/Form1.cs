@@ -40,9 +40,6 @@ namespace CSToolProject
 		// PencilColor var.
 		Color PencilColor = Color.Black;
 
-        // Background color var
-        Color ImageBackColor = Color.Black;
-
         // Tool size var
         int ToolSize = 1;
 
@@ -73,18 +70,6 @@ namespace CSToolProject
             return currentTool;
         }
 
-        // Setter for Background Color
-        public void SetBackgroundImageColor(Color c)
-        {
-            ImageBackColor = c;
-        }
-
-        // Getter for Background Color
-        public Color GetBackgroundImageColor()
-        {
-            return ImageBackColor;
-        }
-
         // Setter for tool size
         public void SetToolSize(int i)
         {
@@ -104,14 +89,16 @@ namespace CSToolProject
         {
             InitializeComponent();
         }
-		
-		//--------------------------------------------------------------------------------------
-		// newToolStripMenuItem_Click: What to do when the new button is pressed under the menu bar.
-		//
-		// Return:
-		//		TabView: Returns a TabView usercontorl
-		//--------------------------------------------------------------------------------------
-		private TabView NewTab(string s)
+
+        //--------------------------------------------------------------------------------------
+        // NewTab: Function for creating a new tab.
+        //
+        // Param:
+        //      s: a string for the filename of the tab.
+        // Return:
+        //		TabView: Returns a TabView usercontorl
+        //--------------------------------------------------------------------------------------
+        private TabView NewTab(string s)
 		{
 			// Create a new TabView
 			TabView tabview = new TabView();
@@ -196,24 +183,8 @@ namespace CSToolProject
                 // Create new bitmap
                 Bitmap bitm = new Bitmap(form2.GetImageWidth(), form2.GetImageHeight(), PixelFormat.Format32bppArgb); // Let the user pick a width and hieght in a seperate form.
 
-				// set color starting color.
-				//using (Graphics gfx = Graphics.FromImage(bitm))
-				//{
-				//	using (SolidBrush brush = new SolidBrush(Color.Black))//form2.GetImageColor()))
-				//	{
-				//		gfx.FillRectangle(brush, 0, 0, form2.GetImageWidth(), form2.GetImageHeight()); // let the user pick a background color or not.
-				//	}
-				//}
-
-				// Set the background color for use with the eraser tool.
-				SetBackgroundImageColor(form2.GetImageColor());
-
-				// Set the Background color for tabview.
-				tabview.SetBackgroundColor(form2.GetImageColor());
-
-				// Set the ImageHeight and Imagewidth for tabview.
-				tabview.SetImageHeight(form2.GetImageHeight());
-				tabview.SetImageWidth(form2.GetImageWidth());
+                // Set the background of the picturebox.
+                tabview.SetBackgroundColor(form2.GetImageColor());
 
                 // Set image on the tabview
                 tabview.SetImage(bitm);
@@ -268,7 +239,7 @@ namespace CSToolProject
 		}
 
 		//--------------------------------------------------------------------------------------
-		// tabControl1_MouseDown: Mouse down options for tab contorller.
+		// tabControl1_MouseDown: Function for if the mouse is down on the tabcontrol.
 		//
 		// Param:
 		//		sender: object type, Supports all classes in the .NET Framework class hierarchy.
@@ -301,7 +272,7 @@ namespace CSToolProject
 		}
 
 		//--------------------------------------------------------------------------------------
-		// tabControl1_MouseUp: Mouse up options for tab contorller.
+		// tabControl1_MouseUp: Function for if the mouse is up for the tab control.
 		//
 		// Param:
 		//		sender: object type, Supports all classes in the .NET Framework class hierarchy.
@@ -313,7 +284,7 @@ namespace CSToolProject
 		}
 
 		//--------------------------------------------------------------------------------------
-		// tabControl1_MouseMove: Mouse move options for tab contorller.
+		// tabControl1_MouseMove: Function for if the mouse has moved for the tabcontrol.
 		//
 		// Param:
 		//		sender: object type, Supports all classes in the .NET Framework class hierarchy.
@@ -353,14 +324,15 @@ namespace CSToolProject
 
 		}
 
-		//--------------------------------------------------------------------------------------
-		// TabAt: Function to check which tab is going to be dragged.
-		//
-		// Param:
-		//		sender: object type, Supports all classes in the .NET Framework class hierarchy.
-		//		e: MouseEventArgs type, Provides data for the MouseUp, MouseDown, and MouseMove events.
-		//--------------------------------------------------------------------------------------
-		private TabPage TabAt(Point position)
+        //--------------------------------------------------------------------------------------
+        // TabAt: Function to check which tab is going to be dragged.
+        //
+        // Param:
+        //		position: Point, the postion of the tab as a vector.
+        // Return:
+        //      TabPage: returns a tabpage.
+        //--------------------------------------------------------------------------------------
+        private TabPage TabAt(Point position)
 		{
 			// Get tab count
 			int count = tabControl1.TabPages.Count;
@@ -383,8 +355,8 @@ namespace CSToolProject
 		// Swap: Function to swap the tabs position with another.
 		//
 		// Param:
-		//		sender: object type, Supports all classes in the .NET Framework class hierarchy.
-		//		e: MouseEventArgs type, Provides data for the MouseUp, MouseDown, and MouseMove events.
+		//		a: Tabpage to swap with b.
+		//		b: Tabpage to swap with a. 
 		//--------------------------------------------------------------------------------------
 		private void Swap(TabPage a, TabPage b)
 		{
@@ -397,14 +369,14 @@ namespace CSToolProject
 			tabControl1.TabPages[j] = a;
 		}
 
-		//--------------------------------------------------------------------------------------
-		// openToolStripMenuItem_Click: What to do when the open button is pressed under the menu bar.
-		//
-		// Param:
-		//		sender: object type, Supports all classes in the .NET Framework class hierarchy.
-		//		e: MouseEventArgs type, Provides data for the MouseUp, MouseDown, and MouseMove events.
-		//--------------------------------------------------------------------------------------
-		private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        //--------------------------------------------------------------------------------------
+        // openToolStripMenuItem_Click: What to do when the open button is pressed under the menu bar.
+        //
+        // Param:
+        //		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+        //		e: EventArgs type, represents the base class for classes that cotain event data.
+        //--------------------------------------------------------------------------------------
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
 			// New open file dialog.
             OpenFileDialog dlg = new OpenFileDialog();
@@ -422,41 +394,50 @@ namespace CSToolProject
                 // Create a new tab
 				TabView tabview = NewTab(filename);
 
-                // Set the background color for the opened image.
-                SetBackgroundImageColor(Color.Transparent);
-
 				// Set image to the new tabview.
-				Bitmap test = new Bitmap(Image.FromFile(dlg.FileName));
-                tabview.SetImage(test);
+				Bitmap bitm = new Bitmap(Image.FromFile(dlg.FileName));
+                tabview.SetImage(bitm);
 			}
         }
 
-
-
-
-
-
-		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        //--------------------------------------------------------------------------------------
+        // saveToolStripMenuItem_Click: What to do if the save button is pressed under the menu bar.
+        //
+        // Param:
+        //		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+        //		e: EventArgs type, represents the base class for classes that cotain event data.
+        //--------------------------------------------------------------------------------------
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+            // New save dialog
 			SaveFileDialog save = new SaveFileDialog();
 
-			save.Filter = "Images|*.png;*.bmp;*.jpg";
+            // Filter which files can be saved.
+            save.Filter = "Images|*.png;*.bmp;*.jpg";
+
+            // Set image format
 			ImageFormat format = ImageFormat.Png;
 
+            // Show dialog box.
 			if (save.ShowDialog() == DialogResult.OK)
 			{
+                //Support filename extensions.
 				string ext = System.IO.Path.GetExtension(save.FileName);
 
 				switch (ext)
 				{
+                    // Jpeg.
 					case ".jpg":
 						format = ImageFormat.Jpeg;
 						break;
+
+                    // Bitmap.
 					case ".bmp":
 						format = ImageFormat.Bmp;
 						break;
 				}
 
+                // Get image and save image to save location.
 				Image image = ((TabView)tabControl1.SelectedTab.Controls[0]).GetImage();
 				image.Save(save.FileName, format);
 			}

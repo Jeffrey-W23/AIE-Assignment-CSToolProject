@@ -20,6 +20,8 @@ namespace CSToolProject
     //--------------------------------------------------------------------------------------
     public partial class TabView : UserControl
     {
+
+        // Piece of code to fix blurring issues.
 		protected override CreateParams CreateParams
 		{
 			get
@@ -43,17 +45,14 @@ namespace CSToolProject
 		// The zoom level of the image
 		int zoomfactor = 1;
 
-		// Image Width and Height
-		int ImageHeight = 1;
-		int ImageWidth = 1;
-
-		// Background image color
-		Color BackgroundColor = Color.White;
-
 		// Var for Form1
 		Form1 form_1;
 
-		Image image;
+        // Background color of the picturebox.
+        Color BackgroundColor = Color.White;
+
+        // the image being drawn to
+        Image image;
 
 		// Form setter. For getting data from form1 and other UserContorls.
 		public void SetForm(Form1 f)
@@ -67,12 +66,10 @@ namespace CSToolProject
 			return image;
 		}
 
-		// Picturebox1 Setter
+		// Set the image of picturebox.
 		public void SetImage(Image i)
         {
-
 			image = i;
-
 			pictureBox1.Height = i.Height;
 			pictureBox1.Width = i.Width;
 		}
@@ -89,47 +86,23 @@ namespace CSToolProject
 			pictureBox1 = p;
 		}
 
-		// ImageHeight Getter
-		public int GetImageHeight()
-		{
-			return ImageHeight;
-		}
+        // background color getter
+        public Color GetBackgroundColor()
+        {
+            return BackgroundColor;
+        }
 
-		// ImageHeight Setter
-		public void SetImageHeight(int i)
-		{
-			ImageHeight = i;
-		}
+        // background color setter
+        public void SetBackgroundColor(Color c)
+        {
+            BackgroundColor = c;
+            pictureBox1.BackColor = BackgroundColor;
+        }
 
-		// ImageWidth Getter
-		public int GetImageWidth()
-		{
-			return ImageWidth;
-		}
-
-		// ImageWidth Setter
-		public void SetImageWidth(int i)
-		{
-			ImageWidth = i;
-		}
-
-		// background color getter
-		public Color GetBackgroundColor()
-		{
-			return BackgroundColor;
-		}
-
-		// background color setter
-		public void SetBackgroundColor(Color c)
-		{
-			BackgroundColor = c;
-			pictureBox1.BackColor = BackgroundColor;
-		}
-
-		//--------------------------------------------------------------------------------------
-		// Default Constructor.
-		//--------------------------------------------------------------------------------------
-		public TabView()
+        //--------------------------------------------------------------------------------------
+        // Default Constructor.
+        //--------------------------------------------------------------------------------------
+        public TabView()
         {
             InitializeComponent();
 		}
@@ -147,7 +120,7 @@ namespace CSToolProject
         }
 
 		//--------------------------------------------------------------------------------------
-		// pictureBox1_MouseClick: Mouse click options for tab contorller.
+		// pictureBox1_MouseClick: Functon for when the mouse is pressed.
 		//
 		// Param:
 		//		sender: object type, Supports all classes in the .NET Framework class hierarchy.
@@ -155,15 +128,17 @@ namespace CSToolProject
 		//--------------------------------------------------------------------------------------
 		private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
+            // Zoomin tool.
 			if (form_1.GetToolType() == ToolType.ZoomIn)
 				ZoomInCanvas();
 
+            // Zoomout tool.
 			if (form_1.GetToolType() == ToolType.ZoomOut)
 				ZoomOutCanvas();
 		}
 
 		//--------------------------------------------------------------------------------------
-		// pictureBox1_MouseDown: Mouse down options for tab contorller.
+		// pictureBox1_MouseDown: Function for when the mouse is down.
 		//
 		// Param:
 		//		sender: object type, Supports all classes in the .NET Framework class hierarchy.
@@ -183,7 +158,7 @@ namespace CSToolProject
 		}
 
 		//--------------------------------------------------------------------------------------
-		// pictureBox1_MouseUp: Mouse up options for tab contorller.
+		// pictureBox1_MouseUp: Function for when the mouse is up.
 		//
 		// Param:
 		//		sender: object type, Supports all classes in the .NET Framework class hierarchy.
@@ -196,7 +171,7 @@ namespace CSToolProject
 		}
 
 		//--------------------------------------------------------------------------------------
-		// pictureBox1_MouseMove: Mouse move options for tab contorller.
+		// pictureBox1_MouseMove: Function for when the mouse moves.
 		//
 		// Param:
 		//		sender: object type, Supports all classes in the .NET Framework class hierarchy.
@@ -204,11 +179,18 @@ namespace CSToolProject
 		//--------------------------------------------------------------------------------------
 		private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
+            // Draw to image when moving mouse
 			DrawToImage(sender, e);
 		}
 
-
-		private void DrawToImage(object sender, MouseEventArgs e)
+        //--------------------------------------------------------------------------------------
+        // DrawToImage: The drawtoimage function, used drawing the pencil and eraser tool to image.
+        //
+        // Param:
+        //		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+        //		e: MouseEventArgs type, Provides data for the MouseUp, MouseDown, and MouseMove events.
+        //--------------------------------------------------------------------------------------
+        private void DrawToImage(object sender, MouseEventArgs e)
 		{
 			// If able to draw
 			if (draw)
@@ -216,6 +198,7 @@ namespace CSToolProject
 				// Create grpahics.
 				using (Graphics g = Graphics.FromImage(image))
 				{
+                    // Set compositing mode.
 					g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
 
 					// Switch statement for which tool is selected.
@@ -227,7 +210,7 @@ namespace CSToolProject
 							// Draw to screen with the pencil tool.
 							g.FillRectangle(new SolidBrush(form_1.GetPencilColor()), ((e.X - x + x) - (form_1.GetToolSize() / 2)) / zoomfactor, ((e.Y - y + y) - (form_1.GetToolSize() / 2)) / zoomfactor, form_1.GetToolSize(), form_1.GetToolSize());
 							pictureBox1.Invalidate();
-							pictureBox1.Refresh();				// divide by zero error.
+							pictureBox1.Refresh();				// divide by zero error?? Maybe something to do with zoom.
 							break;
 
 						// Eraser Tool
@@ -236,55 +219,74 @@ namespace CSToolProject
 							// erase part of image.
 							g.FillRectangle(new SolidBrush(Color.Transparent), ((e.X - x + x) - (form_1.GetToolSize() / 2)) / zoomfactor, ((e.Y - y + y) - (form_1.GetToolSize() / 2)) / zoomfactor, form_1.GetToolSize(), form_1.GetToolSize());
 							pictureBox1.Invalidate();
-							pictureBox1.Refresh();              // divide by zero error.
+							pictureBox1.Refresh();              // divide by zero error?? Maybe something to do with zoom.
 							break;
 					}
 				}
 			}
 		}
 
-
-
-
-
-
-
-
-
-		private void ZoomInCanvas()
+        //--------------------------------------------------------------------------------------
+        // ZoomInCanvas: Function used for working out the zoom level.
+        //--------------------------------------------------------------------------------------
+        private void ZoomInCanvas()
 		{
 			//if (zoomfactor)
 			//{
+                // Update zoomfactor
 				zoomfactor *= 2;
 
-				pictureBox1.Height *= 2;
+                // apply to image.
+                pictureBox1.Height *= 2;
 				pictureBox1.Width *= 2;
 				pictureBox1.Refresh();
 			//}
 		}
 
-		private void ZoomOutCanvas()
+        //--------------------------------------------------------------------------------------
+        // ZoomOutCanvas: Function used for working out the zoom level.
+        //--------------------------------------------------------------------------------------
+        private void ZoomOutCanvas()
 		{
 			//if (zoomfactor)
 			//{
+                // Update zoomfactor
 				zoomfactor /= 2;
-
+                
+                // apply to image.
 				pictureBox1.Height /= 2;
 				pictureBox1.Width /= 2;
 				pictureBox1.Refresh();
 			//}
 		}
 
-		private void pictureBox1_MouseEnter(object sender, EventArgs e)
+        //--------------------------------------------------------------------------------------
+        // pictureBox1_MouseEnter: Function for when the mouse enters the picturebox.
+        //
+        // Param:
+        //		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+        //		e: EventArgs type, represents the base class for classes that cotain event data.
+        //--------------------------------------------------------------------------------------
+        private void pictureBox1_MouseEnter(object sender, EventArgs e)
 		{
+            // Focus the image, used for scrolling with scrollwheel.
 			pictureBox1.Focus();
 		}
 
-		private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        //--------------------------------------------------------------------------------------
+        // pictureBox1_Paint: Used for the drawing of the picturebox.
+        //
+        // Param:
+        //		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+        //		e: PaintEventArgs type, represents the base class for classes that cotain event data.
+        //--------------------------------------------------------------------------------------
+        private void pictureBox1_Paint(object sender, PaintEventArgs e)
 		{
+            // Return until image isnt null.
 			if (image == null)
 				return;
 
+            // Draw the image to the pixturebox
 			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			e.Graphics.SmoothingMode = SmoothingMode.None;
 			e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
