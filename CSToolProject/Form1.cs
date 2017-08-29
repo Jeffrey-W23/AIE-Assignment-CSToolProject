@@ -194,19 +194,19 @@ namespace CSToolProject
                 TabView tabview = NewTab("New Image");
 
                 // Create new bitmap
-                Bitmap bitm = new Bitmap(form2.GetImageWidth(), form2.GetImageHeight()); // Let the user pick a width and hieght in a seperate form.
+                Bitmap bitm = new Bitmap(form2.GetImageWidth(), form2.GetImageHeight(), PixelFormat.Format32bppArgb); // Let the user pick a width and hieght in a seperate form.
 
 				// set color starting color.
-				using (Graphics gfx = Graphics.FromImage(bitm))
-				{
-					using (SolidBrush brush = new SolidBrush(form2.GetImageColor()))
-					{
-						gfx.FillRectangle(brush, 0, 0, form2.GetImageWidth(), form2.GetImageHeight()); // let the user pick a background color or not.
-					}
-				}
-				 
-                // Set the background color for use with the eraser tool.
-                SetBackgroundImageColor(form2.GetImageColor());
+				//using (Graphics gfx = Graphics.FromImage(bitm))
+				//{
+				//	using (SolidBrush brush = new SolidBrush(Color.Black))//form2.GetImageColor()))
+				//	{
+				//		gfx.FillRectangle(brush, 0, 0, form2.GetImageWidth(), form2.GetImageHeight()); // let the user pick a background color or not.
+				//	}
+				//}
+
+				// Set the background color for use with the eraser tool.
+				SetBackgroundImageColor(form2.GetImageColor());
 
 				// Set the Background color for tabview.
 				tabview.SetBackgroundColor(form2.GetImageColor());

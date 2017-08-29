@@ -53,6 +53,8 @@ namespace CSToolProject
 		// Var for Form1
 		Form1 form_1;
 
+		Image image;
+
 		// Form setter. For getting data from form1 and other UserContorls.
 		public void SetForm(Form1 f)
 		{
@@ -62,14 +64,14 @@ namespace CSToolProject
 		// Picturebox1 Setter
 		public Image GetImage()
 		{
-			return pictureBox1.Image;
+			return image;
 		}
 
 		// Picturebox1 Setter
 		public void SetImage(Image i)
         {
 
-            pictureBox1.Image = i;
+			image = i;
 
 			pictureBox1.Height = i.Height;
 			pictureBox1.Width = i.Width;
@@ -121,6 +123,7 @@ namespace CSToolProject
 		public void SetBackgroundColor(Color c)
 		{
 			BackgroundColor = c;
+			pictureBox1.BackColor = BackgroundColor;
 		}
 
 		//--------------------------------------------------------------------------------------
@@ -129,8 +132,7 @@ namespace CSToolProject
 		public TabView()
         {
             InitializeComponent();
-			
-        }
+		}
 
 		//--------------------------------------------------------------------------------------
 		// pictureBox1_Resize: Function called when a resize of the picturebox occurs.
@@ -157,7 +159,7 @@ namespace CSToolProject
 				ZoomInCanvas();
 
 			if (form_1.GetToolType() == ToolType.ZoomOut)
-				ZoomOutCanvas();	
+				ZoomOutCanvas();
 		}
 
 		//--------------------------------------------------------------------------------------
@@ -170,12 +172,15 @@ namespace CSToolProject
 		private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
 			// set drawing to true
-            draw = true;
+			draw = true;
 
 			// set the mouse x and y
-            x = e.X;
-            y = e.Y;
-        }
+			x = e.X;
+			y = e.Y;
+
+			// Draw for single click
+			DrawToImage(sender, e);
+		}
 
 		//--------------------------------------------------------------------------------------
 		// pictureBox1_MouseUp: Mouse up options for tab contorller.
@@ -199,23 +204,19 @@ namespace CSToolProject
 		//--------------------------------------------------------------------------------------
 		private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
+			DrawToImage(sender, e);
+		}
+
+
+		private void DrawToImage(object sender, MouseEventArgs e)
+		{
 			// If able to draw
 			if (draw)
 			{
-
-
-				int wid = pictureBox1.Image.Width;
-				int hgt = pictureBox1.Image.Height;
-				Bitmap bm = new Bitmap(pictureBox1.Image, wid, hgt);
-				//pictureBox1.Image = null;
-				//pictureBox1.Refresh();
-				
 				// Create grpahics.
-				using (Graphics g = Graphics.FromImage(bm))
+				using (Graphics g = Graphics.FromImage(image))
 				{
 					g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-
-					g.InterpolationMode = InterpolationMode.Bicubic;
 
 					// Switch statement for which tool is selected.
 					switch (form_1.GetToolType())
@@ -224,24 +225,18 @@ namespace CSToolProject
 						case ToolType.Pencil:
 
 							// Draw to screen with the pencil tool.
-							g.FillRectangle(new SolidBrush(form_1.GetPencilColor()), (e.X - x + x) / zoomfactor, (e.Y - y + y) / zoomfactor, form_1.GetToolSize(), form_1.GetToolSize());
+							g.FillRectangle(new SolidBrush(form_1.GetPencilColor()), ((e.X - x + x) - (form_1.GetToolSize() / 2)) / zoomfactor, ((e.Y - y + y) - (form_1.GetToolSize() / 2)) / zoomfactor, form_1.GetToolSize(), form_1.GetToolSize());
 							pictureBox1.Invalidate();
-
-							pictureBox1.Image = bm;
-							pictureBox1.Refresh();
-
+							pictureBox1.Refresh();				// divide by zero error.
 							break;
 
 						// Eraser Tool
 						case ToolType.Eraser:
 
 							// erase part of image.
-							g.FillRectangle(new SolidBrush(Color.Transparent), (e.X - x + x) / zoomfactor, (e.Y - y + y) / zoomfactor, form_1.GetToolSize(), form_1.GetToolSize());
+							g.FillRectangle(new SolidBrush(Color.Transparent), ((e.X - x + x) - (form_1.GetToolSize() / 2)) / zoomfactor, ((e.Y - y + y) - (form_1.GetToolSize() / 2)) / zoomfactor, form_1.GetToolSize(), form_1.GetToolSize());
 							pictureBox1.Invalidate();
-
-							pictureBox1.Image = bm;
-							pictureBox1.Refresh();
-
+							pictureBox1.Refresh();              // divide by zero error.
 							break;
 					}
 				}
@@ -256,28 +251,44 @@ namespace CSToolProject
 
 
 
-
 		private void ZoomInCanvas()
 		{
-			zoomfactor *= 2;
+			//if (zoomfactor)
+			//{
+				zoomfactor *= 2;
 
-			pictureBox1.Height *= 2;
-			pictureBox1.Width *= 2;
-			pictureBox1.Refresh();
+				pictureBox1.Height *= 2;
+				pictureBox1.Width *= 2;
+				pictureBox1.Refresh();
+			//}
 		}
 
 		private void ZoomOutCanvas()
 		{
-			zoomfactor /= 2;
+			//if (zoomfactor)
+			//{
+				zoomfactor /= 2;
 
-			pictureBox1.Height /= 2;
-			pictureBox1.Width /= 2;
-			pictureBox1.Refresh();
+				pictureBox1.Height /= 2;
+				pictureBox1.Width /= 2;
+				pictureBox1.Refresh();
+			//}
 		}
 
 		private void pictureBox1_MouseEnter(object sender, EventArgs e)
 		{
 			pictureBox1.Focus();
+		}
+
+		private void pictureBox1_Paint(object sender, PaintEventArgs e)
+		{
+			if (image == null)
+				return;
+
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+			e.Graphics.SmoothingMode = SmoothingMode.None;
+			e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
+			e.Graphics.DrawImage(image, new Rectangle(0, 0, pictureBox1.Width, pictureBox1.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel);
 		}
 	}
 }
