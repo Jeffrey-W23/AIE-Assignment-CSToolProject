@@ -72,7 +72,11 @@ namespace CSToolProject
 			image = i;
 			pictureBox1.Height = i.Height;
 			pictureBox1.Width = i.Width;
-		}
+
+            // Call auto zoom.
+            AutoZoomStart();
+
+        }
 
 		// Picturebox1 Setter
 		public PictureBox GetPictureBox()
@@ -226,13 +230,30 @@ namespace CSToolProject
 			}
 		}
 
+
+
+
+
+        private void AutoZoomStart()
+        {
+            if (pictureBox1.Height < 400 && pictureBox1.Width < 400)
+            {
+                ZoomInCanvas();
+                ZoomInCanvas();
+                ZoomInCanvas();
+            }
+        }
+
+
+
+
         //--------------------------------------------------------------------------------------
         // ZoomInCanvas: Function used for working out the zoom level.
         //--------------------------------------------------------------------------------------
         private void ZoomInCanvas()
 		{
-			//if (zoomfactor)
-			//{
+			if (zoomfactor < 18)
+			{
                 // Update zoomfactor
 				zoomfactor *= 2;
 
@@ -240,7 +261,7 @@ namespace CSToolProject
                 pictureBox1.Height *= 2;
 				pictureBox1.Width *= 2;
 				pictureBox1.Refresh();
-			//}
+			}
 		}
 
         //--------------------------------------------------------------------------------------
@@ -248,8 +269,8 @@ namespace CSToolProject
         //--------------------------------------------------------------------------------------
         private void ZoomOutCanvas()
 		{
-			//if (zoomfactor)
-			//{
+			if (zoomfactor > 1)
+			{
                 // Update zoomfactor
 				zoomfactor /= 2;
                 
@@ -257,7 +278,7 @@ namespace CSToolProject
 				pictureBox1.Height /= 2;
 				pictureBox1.Width /= 2;
 				pictureBox1.Refresh();
-			//}
+			}
 		}
 
         //--------------------------------------------------------------------------------------

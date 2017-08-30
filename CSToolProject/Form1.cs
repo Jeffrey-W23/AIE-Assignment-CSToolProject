@@ -413,7 +413,7 @@ namespace CSToolProject
 			SaveFileDialog save = new SaveFileDialog();
 
             // Filter which files can be saved.
-            save.Filter = "Images|*.png;*.bmp;*.jpg";
+            save.Filter = "PNG|*.png|BMP|*.bmp|JPG|*.jpg";
 
             // Set image format
 			ImageFormat format = ImageFormat.Png;
@@ -435,7 +435,12 @@ namespace CSToolProject
 					case ".bmp":
 						format = ImageFormat.Bmp;
 						break;
-				}
+
+                    // Png.
+                    case ".png":
+                        format = ImageFormat.Png;
+                        break;
+                }
 
                 // Get image and save image to save location.
 				Image image = ((TabView)tabControl1.SelectedTab.Controls[0]).GetImage();
