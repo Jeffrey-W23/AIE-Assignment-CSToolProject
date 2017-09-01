@@ -38,7 +38,7 @@ namespace CSToolProject
 		private TabPage draggedTab;
 
 		// PencilColor var.
-		Color PencilColor = Color.Black;
+		Color PencilColor = Color.Red;
 
         // Tool size var
         int ToolSize = 1;
@@ -188,6 +188,9 @@ namespace CSToolProject
 
                 // Set image on the tabview
                 tabview.SetImage(bitm);
+
+                // Set the new file to true.
+                tabview.SetNewFile(true);
             }
         }
 
@@ -259,11 +262,33 @@ namespace CSToolProject
                 // If the X button is pressed close the tab.
                 if (closeButton.Contains(e.Location))
                 {
-                    //if (MessageBox.Show("Would you like to Close this Tab?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                    //{
-                    this.tabControl1.TabPages.RemoveAt(i);
-                    break;
-                    //}
+                    // Check if the image is saved or not
+                    if (((TabView)tabControl1.SelectedTab.Controls[0]).GetAltered() == true)
+                    {
+                        // Display dialog box
+                        DialogResult result = MessageBox.Show("Do you want to save changes before closing?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        // save and close
+                        if (result == DialogResult.Yes)
+                        {
+                            SaveAsFunction();
+                            this.tabControl1.TabPages.RemoveAt(i);
+                            break;
+                        }
+
+                        // just close
+                        else if (result == DialogResult.No)
+                        {
+                            this.tabControl1.TabPages.RemoveAt(i);
+                            break;
+                        }
+                    }
+                    else if (((TabView)tabControl1.SelectedTab.Controls[0]).GetAltered() == false)
+                    {
+                        // Close the tab.
+                        this.tabControl1.TabPages.RemoveAt(i);
+                        break;
+                    }
                 }
 			}
 
@@ -383,13 +408,13 @@ namespace CSToolProject
             string filename = "";
 
 			// Filter which files can be opened.
-			dlg.Filter = "Image (*bmp)|*.bmp|All Files|*.*";
+			dlg.Filter = "BMP|*.bmp|GIF|*.gif|JPG|*.jpg;*.jpeg|PNG|*.png|TIFF|*.tif;*.tiff|" + "All Files|*.*";
 
-			// Present the open dialog
+            // Present the open dialog
             if (dlg.ShowDialog() == DialogResult.OK)
             {
-				// store the file path.
-				filename = dlg.SafeFileName;
+                // store the file path.
+                filename = dlg.SafeFileName;
 
                 // Create a new tab
 				TabView tabview = NewTab(filename);
@@ -397,7 +422,8 @@ namespace CSToolProject
 				// Set image to the new tabview.
 				Bitmap bitm = new Bitmap(Image.FromFile(dlg.FileName));
                 tabview.SetImage(bitm);
-			}
+                tabview.SetDirectory(dlg.FileName);
+            }
         }
 
         //--------------------------------------------------------------------------------------
@@ -409,43 +435,155 @@ namespace CSToolProject
         //--------------------------------------------------------------------------------------
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+            // Check to make sure there is something opened.
+            if (tabControl1.TabCount > 0)
+            {
+                SaveFunction();
+            }
+        }
+
+        //--------------------------------------------------------------------------------------
+        // saveAsToolStripMenuItem_Click: What to do if the save as button is pressed under the menu bar.
+        //
+        // Param:
+        //		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+        //		e: EventArgs type, represents the base class for classes that cotain event data.
+        //--------------------------------------------------------------------------------------
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Check to make sure there is something opened.
+            if (tabControl1.TabCount > 0)
+            {
+                SaveAsFunction();
+            }
+        }
+
+        //--------------------------------------------------------------------------------------
+        // SaveFunction: The saving function when an image already has a save location.
+        //--------------------------------------------------------------------------------------
+        private void SaveFunction()
+        {
+            // Get the current tabview
+            TabView tabview = ((TabView)tabControl1.SelectedTab.Controls[0]);
+
+            // Check if something has a file path or not
+            //if it already does then dont use save dialog and just go ahead and save the file
+            if (tabview.GetNewFile() == false)
+            {
+                if (tabview.GetDirectory() != null)
+                {
+                    // Get image and save image to save location.
+                    Image image = tabview.GetImage();
+                    image.Save(tabview.GetDirectory());
+                    tabview.SetAltered(false);
+                    tabview.SetNewFile(false);
+                }
+            }
+
+            // The file hasnt been saved before, need thesave dialog
+            else if (tabview.GetNewFile() == true)
+            {
+                SaveAsFunction();
+            }
+        }
+
+        //--------------------------------------------------------------------------------------
+        // SaveAsFunction: The saving function when an image doesnt have a saved file.
+        //--------------------------------------------------------------------------------------
+        private void SaveAsFunction()
+        {
             // New save dialog
-			SaveFileDialog save = new SaveFileDialog();
+            SaveFileDialog save = new SaveFileDialog();
 
             // Filter which files can be saved.
-            save.Filter = "PNG|*.png|BMP|*.bmp|JPG|*.jpg";
+            save.Filter = "BMP|*.bmp|GIF|*.gif|JPG|*.jpg|JPEG|*.jpeg|PNG|*.png|TIF|*.tif|TIFF|*.tiff";
 
             // Set image format
-			ImageFormat format = ImageFormat.Png;
+            ImageFormat format = ImageFormat.Png;
 
             // Show dialog box.
-			if (save.ShowDialog() == DialogResult.OK)
-			{
-                //Support filename extensions.
-				string ext = System.IO.Path.GetExtension(save.FileName);
+            if (save.ShowDialog() == DialogResult.OK)
+            {
+                //get filename extensions.
+                string ext = System.IO.Path.GetExtension(save.FileName);
 
-				switch (ext)
-				{
-                    // Jpeg.
-					case ".jpg":
-						format = ImageFormat.Jpeg;
-						break;
-
-                    // Bitmap.
-					case ".bmp":
-						format = ImageFormat.Bmp;
-						break;
-
-                    // Png.
+                switch (ext)
+                {
+                    // png.
                     case ".png":
                         format = ImageFormat.Png;
                         break;
+
+                    // bmp.
+                    case ".bmp":
+                        format = ImageFormat.Bmp;
+                        break;
+
+                    // gif.
+                    case ".gif":
+                        format = ImageFormat.Gif;
+                        break;
+
+                    // jpg.
+                    case ".jpg":
+                        format = ImageFormat.Jpeg;
+                        break;
+
+                    // jpeg.
+                    case ".jpeg":
+                        format = ImageFormat.Jpeg;
+                        break;
+
+                    // tif.
+                    case ".tif":
+                        format = ImageFormat.Tiff;
+                        break;
+
+                    // tiff.
+                    case ".tiff":
+                        format = ImageFormat.Tiff;
+                        break;
                 }
 
+                // Get the current tabview
+                TabView tabview = ((TabView)tabControl1.SelectedTab.Controls[0]);
+
                 // Get image and save image to save location.
-				Image image = ((TabView)tabControl1.SelectedTab.Controls[0]).GetImage();
-				image.Save(save.FileName, format);
-			}
-		}
-	}
+                Image image = tabview.GetImage();
+                image.Save(save.FileName, format);
+
+                // Set altered and new to false
+                tabview.SetAltered(false);
+                tabview.SetNewFile(false);
+                tabview.SetDirectory(save.FileName);
+            }
+        }
+
+        //--------------------------------------------------------------------------------------
+        // Form1_FormClosing: A function for what to do when the application closes.
+        //
+        // Param:
+        //		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+        //		e: FormClosingEventArgs type, represents the base class for classes that cotain event data.
+        //--------------------------------------------------------------------------------------
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Check if anything is open
+            if (tabControl1.TabCount > 0)
+            {
+                // Check if the image is saved or not
+                if (((TabView)tabControl1.SelectedTab.Controls[0]).GetAltered() == true)
+                {
+                    // Display dialog box
+                    DialogResult result = MessageBox.Show("Do you want to save changes before closing?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    // save and exit
+                    if (result == DialogResult.Yes)
+                    {
+                        SaveAsFunction();
+                    }
+                }
+            }
+        }
+    }
 }

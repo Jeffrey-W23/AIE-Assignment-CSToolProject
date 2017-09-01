@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 
 //--------------------------------------------------------------------------------------
 // Namespace CSToolProject
@@ -33,13 +34,22 @@ namespace CSToolProject
 		}
 
 		// paint color.
-		Color PencilColor = Color.Black;
+		Color PencilColor = Color.Red;
+
+        //Altered bool
+        bool altered = false;
+
+        // bool for if the file is new or not.
+        bool NewFile = false;
 
 		// Bool for if drawing can be done or not.
 		bool draw = false;
 
-		// x and y for the drawing tool.
-		int x = 0;
+        // File directory 
+        string directory;
+
+        // x and y for the drawing tool.
+        int x = 0;
 		int y = 0;
 
 		// The zoom level of the image
@@ -69,13 +79,27 @@ namespace CSToolProject
 		// Set the image of picturebox.
 		public void SetImage(Image i)
         {
-			image = i;
-			pictureBox1.Height = i.Height;
+            // Set vars
+            image = i;
+
+            // Set width and height
+            pictureBox1.Height = i.Height;
 			pictureBox1.Width = i.Width;
 
             // Call auto zoom.
             AutoZoomStart();
+        }
 
+        // Setter for directory and format
+        public void SetDirectory(string dir)
+        {
+            directory = dir;
+        }
+
+        // Directory getter
+        public string GetDirectory()
+        {
+            return directory;
         }
 
 		// Picturebox1 Setter
@@ -101,6 +125,30 @@ namespace CSToolProject
         {
             BackgroundColor = c;
             pictureBox1.BackColor = BackgroundColor;
+        }
+
+        // Altered getter.
+        public bool GetAltered()
+        {
+            return altered;
+        }
+
+        // Altered setter.
+        public void SetAltered(bool b)
+        {
+            altered = b;
+        }
+
+        // NewFile getter.
+        public bool GetNewFile()
+        {
+            return NewFile;
+        }
+
+        // NewFile setter.
+        public void SetNewFile(bool b)
+        {
+            NewFile = b;
         }
 
         //--------------------------------------------------------------------------------------
@@ -227,25 +275,26 @@ namespace CSToolProject
 							break;
 					}
 				}
-			}
-		}
 
+                // Set the image to altered.
+                altered = true;
+            }
+        }
 
-
-
-
+        //--------------------------------------------------------------------------------------
+        // AutoZoomStart: Auto zoom the image in depending on image size.
+        //--------------------------------------------------------------------------------------
         private void AutoZoomStart()
         {
+            // Check the image size.
             if (pictureBox1.Height < 400 && pictureBox1.Width < 400)
             {
+                // Zoom in 3 times.
                 ZoomInCanvas();
                 ZoomInCanvas();
                 ZoomInCanvas();
             }
         }
-
-
-
 
         //--------------------------------------------------------------------------------------
         // ZoomInCanvas: Function used for working out the zoom level.
