@@ -5,8 +5,10 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -34,8 +36,14 @@ namespace CSToolProject
         const int CLOSE_SPACE = 15;
         const int CLOSE_AREA = 15;
 
-		// Tabpage for tab dragging
-		private TabPage draggedTab;
+        // DragNDrop vars
+        bool isDataValid;
+        string filepath;
+        Image image;
+        Thread imageThread;
+
+        // Tabpage for tab dragging
+        private TabPage draggedTab;
 
 		// PencilColor var.
 		Color PencilColor = Color.Red;
@@ -124,8 +132,11 @@ namespace CSToolProject
 			// Resize the tab.
 			ResizeTabBar();
 
-			// return the tabview
-			return tabview;
+            // Enable or disable tabs.
+            EnableButtons();
+
+            // return the tabview
+            return tabview;
 		}
 
 		//--------------------------------------------------------------------------------------
@@ -273,6 +284,7 @@ namespace CSToolProject
                         {
                             SaveAsFunction();
                             this.tabControl1.TabPages.RemoveAt(i);
+                            EnableButtons();
                             break;
                         }
 
@@ -280,6 +292,7 @@ namespace CSToolProject
                         else if (result == DialogResult.No)
                         {
                             this.tabControl1.TabPages.RemoveAt(i);
+                            EnableButtons();
                             break;
                         }
                     }
@@ -287,6 +300,7 @@ namespace CSToolProject
                     {
                         // Close the tab.
                         this.tabControl1.TabPages.RemoveAt(i);
+                        EnableButtons();
                         break;
                     }
                 }
@@ -423,6 +437,7 @@ namespace CSToolProject
 				Bitmap bitm = new Bitmap(Image.FromFile(dlg.FileName));
                 tabview.SetImage(bitm);
                 tabview.SetDirectory(dlg.FileName);
+                tabview.SetNewFile(true);
             }
         }
 
@@ -496,11 +511,11 @@ namespace CSToolProject
             SaveFileDialog save = new SaveFileDialog();
 
             // Filter which files can be saved.
-            save.Filter = "BMP|*.bmp|GIF|*.gif|JPG|*.jpg|JPEG|*.jpeg|PNG|*.png|TIF|*.tif|TIFF|*.tiff";
-
+            save.Filter = "PNG|*.png|BMP|*.bmp|GIF|*.gif|JPG|*.jpg|JPEG|*.jpeg|TIF|*.tif|TIFF|*.tiff";
+            
             // Set image format
             ImageFormat format = ImageFormat.Png;
-
+            
             // Show dialog box.
             if (save.ShowDialog() == DialogResult.OK)
             {
@@ -556,6 +571,9 @@ namespace CSToolProject
                 tabview.SetAltered(false);
                 tabview.SetNewFile(false);
                 tabview.SetDirectory(save.FileName);
+
+                // Set the tab name
+                tabControl1.SelectedTab.Text = System.IO.Path.GetFileName(save.FileName);
             }
         }
 
@@ -568,7 +586,157 @@ namespace CSToolProject
         //--------------------------------------------------------------------------------------
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // Check if anything is open
+            // Check if anything is open.
+            if (tabControl1.TabCount > 0)
+            {
+                //Looping through the controls.
+                for (int i = 0; i < tabControl1.TabPages.Count; i++)
+                {
+                    // Check if the image is saved or not
+                    if (((TabView)tabControl1.SelectedTab.Controls[0]).GetAltered() == true)
+                    {
+                        // Display dialog box
+                        DialogResult result = MessageBox.Show("Do you want to save changes before closing?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        // save and close
+                        if (result == DialogResult.Yes)
+                        {
+                            // Save project
+                            SaveAsFunction();
+
+                            // Remove the current tab.
+                            tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+                            i--;
+                        }
+
+                        // just close
+                        else if (result == DialogResult.No)
+                        {
+                            // Remove the current tab.
+                            tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+                            i--;
+                        }
+                    }
+
+                    else if (((TabView)tabControl1.SelectedTab.Controls[0]).GetAltered() == false)
+                    {
+                        // Remove all tabs.
+                        tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+                        i--;
+                    }
+                }
+            }
+        }
+
+        //--------------------------------------------------------------------------------------
+        // EnableButtons: Enable and Disable buttons throughout application.
+        //--------------------------------------------------------------------------------------
+        private void EnableButtons()
+        {
+            // If there are no tabs
+            if (tabControl1.TabCount == 0)
+            {
+                saveToolStripMenuItem.Enabled = false;
+                saveAsToolStripMenuItem.Enabled = false;
+                copyToolStripMenuItem.Enabled = false;
+                cutToolStripMenuItem.Enabled = false;
+                pasteToolStripMenuItem.Enabled = false;
+                closeTabToolStripMenuItem.Enabled = false;
+                closeAllTabsToolStripMenuItem.Enabled = false;
+                toolBar1.Enabled = false;
+            }
+
+            // If there are tabs opened
+            else if (tabControl1.TabCount > 0)
+            {
+                saveToolStripMenuItem.Enabled = true;
+                saveAsToolStripMenuItem.Enabled = true;
+                //copyToolStripMenuItem.Enabled = true;
+                //cutToolStripMenuItem.Enabled = true;
+                //pasteToolStripMenuItem.Enabled = true;
+                closeTabToolStripMenuItem.Enabled = true;
+                closeAllTabsToolStripMenuItem.Enabled = true;
+                toolBar1.Enabled = true;
+            }
+        }
+
+        //--------------------------------------------------------------------------------------
+        // exitToolStripMenuItem_Click: What to do if the exit button is pressed under the menu bar.
+        //
+        // Param:
+        //		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+        //		e: FormClosingEventArgs type, represents the base class for classes that cotain event data.
+        //--------------------------------------------------------------------------------------
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Check if anything is open.
+            if (tabControl1.TabCount > 0)
+            {
+                //Looping through the controls.
+                for (int i = 0; i < tabControl1.TabPages.Count; i++)
+                {
+                    // Check if the image is saved or not
+                    if (((TabView)tabControl1.SelectedTab.Controls[0]).GetAltered() == true)
+                    {
+                        // Display dialog box
+                        DialogResult result = MessageBox.Show("Do you want to save changes before closing?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        // save and close
+                        if (result == DialogResult.Yes)
+                        {
+                            // Save project
+                            SaveAsFunction();
+
+                            // Remove the current tab.
+                            tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+                            i--;
+                        }
+
+                        // just close
+                        else if (result == DialogResult.No)
+                        {
+                            // Remove the current tab.
+                            tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+                            i--;
+                        }
+                    }
+
+                    else if (((TabView)tabControl1.SelectedTab.Controls[0]).GetAltered() == false)
+                    {
+                        // Remove all tabs.
+                        tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+                        i--;
+                    }
+                }
+            }
+
+            // Close application
+            this.Close();
+        }
+
+        //--------------------------------------------------------------------------------------
+        // minimizeToolStripMenuItem_Click: What to do if the minimize button is pressed under the menu bar.
+        //
+        // Param:
+        //		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+        //		e: FormClosingEventArgs type, represents the base class for classes that cotain event data.
+        //--------------------------------------------------------------------------------------
+        private void minimizeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Minimize tab.
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        //--------------------------------------------------------------------------------------
+        // closeTabToolStripMenuItem_Click: What to do if the close Tab button is pressed under the menu bar.
+        //
+        // Param:
+        //		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+        //		e: FormClosingEventArgs type, represents the base class for classes that cotain event data.
+        //--------------------------------------------------------------------------------------
+        private void closeTabToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Check if anything is open.
             if (tabControl1.TabCount > 0)
             {
                 // Check if the image is saved or not
@@ -577,13 +745,220 @@ namespace CSToolProject
                     // Display dialog box
                     DialogResult result = MessageBox.Show("Do you want to save changes before closing?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                    // save and exit
+                    // save and close
                     if (result == DialogResult.Yes)
                     {
+                        // Save project
                         SaveAsFunction();
+
+                        // Remove the current tab.
+                        tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+
+                        // Disable or enable buttons
+                        EnableButtons();
+                    }
+
+                    // just close
+                    else if (result == DialogResult.No)
+                    {
+                        // Remove the current tab.
+                        tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+
+                        // Disable or enable buttons
+                        EnableButtons();
+                    }
+                }
+                else if (((TabView)tabControl1.SelectedTab.Controls[0]).GetAltered() == false)
+                {
+                    // Remove the current tab.
+                    tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+
+                    // Disable or enable buttons
+                    EnableButtons();
+                }
+            }
+        }
+
+        //--------------------------------------------------------------------------------------
+        // closeAllTabsToolStripMenuItem_Click: What to do if the close all Tab button is pressed under the menu bar.
+        //
+        // Param:
+        //		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+        //		e: FormClosingEventArgs type, represents the base class for classes that cotain event data.
+        //--------------------------------------------------------------------------------------
+        private void closeAllTabsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Check if anything is open.
+            if (tabControl1.TabCount > 0)
+            {
+                //Looping through the controls.
+                for (int i = 0; i < tabControl1.TabPages.Count; i++)
+                {
+                    // Check if the image is saved or not
+                    if (((TabView)tabControl1.SelectedTab.Controls[0]).GetAltered() == true)
+                    {
+                        // Display dialog box
+                        DialogResult result = MessageBox.Show("Do you want to save changes before closing?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        // save and close
+                        if (result == DialogResult.Yes)
+                        {
+                            // Save project
+                            SaveAsFunction();
+
+                            // Remove the current tab.
+                            tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+                            i--;
+
+                            // Disable or enable buttons
+                            EnableButtons();
+                        }
+
+                        // just close
+                        else if (result == DialogResult.No)
+                        {
+                            // Remove the current tab.
+                            tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+                            i--;
+
+                            // Disable or enable buttons
+                            EnableButtons();
+                        }
+                    }
+
+                    else if (((TabView)tabControl1.SelectedTab.Controls[0]).GetAltered() == false)
+                    {
+                        // Remove all tabs.
+                        tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+                        i--;
+
+                        // Disable or enable buttons
+                        EnableButtons();
                     }
                 }
             }
+        }
+
+        //--------------------------------------------------------------------------------------
+        // Form1_DragEnter: Function for what to do when something is drag entered.
+        //
+        // Param:
+        //		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+        //		e: DragEventArgs type, represents the base class for classes that cotain event data.
+        //--------------------------------------------------------------------------------------
+        private void Form1_DragEnter(object sender, DragEventArgs e)
+        {
+            // new string for filename
+            string filename;
+
+            // Check and get the dropped file
+            isDataValid = GetFile(out filename, e);
+
+            // Make sure the file is valid
+            if (isDataValid)
+            {
+                // Set the filepath
+                filepath = filename;
+
+                // Start a new thread
+                imageThread = new Thread(new ThreadStart(LoadImage));
+                imageThread.Start();
+
+                // get the dragged file
+                e.Effect = DragDropEffects.Copy;
+            }
+
+            else
+            {
+                // if file isnt valid ignore
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        //--------------------------------------------------------------------------------------
+        // Form1_DragDrop: Function for what to do when something is drag dropped.
+        //
+        // Param:
+        //		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+        //		e: DragEventArgs type, represents the base class for classes that cotain event data.
+        //--------------------------------------------------------------------------------------
+        private void Form1_DragDrop(object sender, DragEventArgs e)
+        {
+            // if a valid file has been dropped.
+            if (isDataValid)
+            {
+                // while the thread is still running.
+                while (imageThread.IsAlive)
+                {
+                    Application.DoEvents();
+
+                    // Block the current thread
+                    Thread.Sleep(0);
+                }
+
+                // Create a new tab
+                TabView tabview = NewTab(System.IO.Path.GetFileName(filepath));
+
+                // Set image to the new tabview.
+                tabview.SetImage(image);
+                tabview.SetDirectory(System.IO.Path.GetFileName(filepath));
+            }
+        }
+
+        //--------------------------------------------------------------------------------------
+        // LoadImage: Creates a new bitmap to pass into a new tab.
+        //--------------------------------------------------------------------------------------
+        private void LoadImage()
+        {
+            // Set the temp image to the dropped image
+            image = new Bitmap(filepath);
+        }
+
+        //--------------------------------------------------------------------------------------
+        // GetFile: 
+        //
+        // Param:
+        //		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+        //		e: DragEventArgs type, represents the base class for classes that cotain event data.
+        //--------------------------------------------------------------------------------------
+        private bool GetFile(out string filename, DragEventArgs e)
+        {
+            // bool for if the file is valid or not
+            bool result = false;
+
+            // Set the filename to an empty string.
+            filename = String.Empty;
+
+            // Has something be dropped?
+            if ((e.AllowedEffect & DragDropEffects.Copy) == DragDropEffects.Copy)
+            {
+                // Create an array of dropped objects.
+                Array data = ((IDataObject)e.Data).GetData("FileDrop") as Array;
+
+                // Continue if not null
+                if (data != null)
+                {
+                    // Check to make sure there is only one dropped file and is a string.
+                    if ((data.Length == 1) && (data.GetValue(0) is String))
+                    {
+                        // Get the filename from the data string
+                        filename = ((string[])data)[0];
+
+                        // Get the files extention.
+                        string ext = Path.GetExtension(filename).ToLower();
+
+                        // Supported files that are allowed to be dropped on the applictaion
+                        if ((ext == ".jpg") || (ext == ".png") || (ext == ".bmp") || (ext == ".gif") || (ext == ".jpeg") || (ext == ".tif") || (ext == ".tiff"))
+                        {
+                            // File is valid
+                            result = true;
+                        }
+                    }
+                }
+            }
+            
+            // Return if the file is valid or not.
+            return result;
         }
     }
 }

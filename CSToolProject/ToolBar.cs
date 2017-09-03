@@ -132,7 +132,7 @@ namespace CSToolProject
 				// Set the tool type.
 				mainForm.SetToolType(ToolType.ZoomOut);
 			}
-		}
+        }
         
         //--------------------------------------------------------------------------------------
         // ToolSize_ValueChanged: Called when the value has changed in the numeric box.
@@ -142,6 +142,26 @@ namespace CSToolProject
         //		e: EventArgs type, represents the base class for classes that cotain event data.
         //--------------------------------------------------------------------------------------
         private void ToolSize_ValueChanged(object sender, EventArgs e)
+        {
+            // Reference to the Form1
+            Form1 mainForm = Parent as Form1;
+
+            //if mainForm isnt null
+            if (mainForm != null)
+            {
+                // Set the tool size.
+                mainForm.SetToolSize(Convert.ToInt32(ToolSize.Value));
+            }
+        }
+
+        //--------------------------------------------------------------------------------------
+        // ToolSize_PreviewKeyDown: Called when the key is down in the numeric box.
+        //
+        // Param:
+        //		sender: object type, Supports all classes in the .NET Framework class hierarchy.
+        //		e: PreviewKeyDownEventArgs type, represents the base class for classes that cotain event data.
+        //--------------------------------------------------------------------------------------
+        private void ToolSize_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             // Reference to the Form1
             Form1 mainForm = Parent as Form1;

@@ -1,0 +1,12 @@
+C:\Users\Thomas Wiltshire\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolProject\bin\Release\CSToolProject.exe.config
+C:\Users\Thomas Wiltshire\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolProject\bin\Release\CSToolProject.exe
+C:\Users\Thomas Wiltshire\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolProject\bin\Release\CSToolProject.pdb
+C:\Users\Thomas Wiltshire\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolProject\obj\Release\CSToolProject.Form1.resources
+C:\Users\Thomas Wiltshire\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolProject\obj\Release\CSToolProject.Form2.resources
+C:\Users\Thomas Wiltshire\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolProject\obj\Release\CSToolProject.LayerBar.resources
+C:\Users\Thomas Wiltshire\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolProject\obj\Release\CSToolProject.Properties.Resources.resources
+C:\Users\Thomas Wiltshire\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolProject\obj\Release\CSToolProject.TabView.resources
+C:\Users\Thomas Wiltshire\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolProject\obj\Release\CSToolProject.ToolBar.resources
+C:\Users\Thomas Wiltshire\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolProject\obj\Release\CSToolProject.csproj.GenerateResource.Cache
+C:\Users\Thomas Wiltshire\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolProject\obj\Release\CSToolProject.exe
+C:\Users\Thomas Wiltshire\Documents\GitHub\AIE-Assignment-CSToolProject\CSToolProject\obj\Release\CSToolProject.pdb

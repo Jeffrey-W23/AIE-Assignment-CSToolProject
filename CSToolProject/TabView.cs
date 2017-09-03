@@ -247,7 +247,7 @@ namespace CSToolProject
 			// If able to draw
 			if (draw)
 			{
-				// Create grpahics.
+				// Create graphics.
 				using (Graphics g = Graphics.FromImage(image))
 				{
                     // Set compositing mode.
@@ -262,7 +262,7 @@ namespace CSToolProject
 							// Draw to screen with the pencil tool.
 							g.FillRectangle(new SolidBrush(form_1.GetPencilColor()), ((e.X - x + x) - (form_1.GetToolSize() / 2)) / zoomfactor, ((e.Y - y + y) - (form_1.GetToolSize() / 2)) / zoomfactor, form_1.GetToolSize(), form_1.GetToolSize());
 							pictureBox1.Invalidate();
-							pictureBox1.Refresh();				// divide by zero error?? Maybe something to do with zoom.
+							pictureBox1.Refresh();
 							break;
 
 						// Eraser Tool
@@ -271,7 +271,7 @@ namespace CSToolProject
 							// erase part of image.
 							g.FillRectangle(new SolidBrush(Color.Transparent), ((e.X - x + x) - (form_1.GetToolSize() / 2)) / zoomfactor, ((e.Y - y + y) - (form_1.GetToolSize() / 2)) / zoomfactor, form_1.GetToolSize(), form_1.GetToolSize());
 							pictureBox1.Invalidate();
-							pictureBox1.Refresh();              // divide by zero error?? Maybe something to do with zoom.
+							pictureBox1.Refresh();
 							break;
 					}
 				}
